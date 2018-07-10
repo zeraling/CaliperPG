@@ -1,0 +1,15 @@
+{
+    "autoload": {
+        "psr-4":{
+            "Application\\":"application/"
+        }
+    },
+    "require": {
+        "phroute/phroute": "v2.1.0",
+        "twig/twig": "v2.4.8",
+        "twig/extensions": "v1.5.1",
+        "monolog/monolog": "1.23.0",
+        "phpoffice/phpspreadsheet": "1.2.1",
+        "spipu/html2pdf": "v5.1.0"
+    }
+}

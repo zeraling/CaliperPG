@@ -1,0 +1,76 @@
+{% extends "pageMaster.twig" %}
+{% block style_plugin %}
+
+{% endblock %}
+{% block content %}
+    <div class="page-content">
+        <div class="row">
+            <div id="datosInfo"></div>
+            <div class="col-xs-12 col-sm-12 widget-container-col">
+                <div class="widget-box widget-color-green2">
+                    <div class="widget-header">
+                        <h5 class="widget-title">Lista Clientes</h5>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div class="row">
+                                <div class="pull-left">
+                                    <div class="btn-group">
+                                        <button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle" aria-expanded="false">
+                                            Opciones <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-success">  
+                                            <li><a id="Nuevo" ><i class="fa fa-plus"></i> Nuevo </a></li>
+                                            <li><a id="Editar"><i class="fa fa-edit"></i> Actualizar</a></li>  
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <div class="btn-group mr10">
+                                        <button class="btn btn-white btn-info btn-sm" id="Ver" type="button"><i class="fa fa-info"></i></button>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <table id="listaClientes" class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Cod</th>
+                                            <th>Nit</th>
+                                            <th>Nombre</th>
+                                            <th>Ciudad</th>
+                                            <th>Empresa</th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody>
+                                        {%if listaClientes %}
+                                            {%for clientes in listaClientes %}
+                                                <tr>
+                                                    <td><span data="{{clientes.codigo}}">{{clientes.codigo}}</span></td>
+                                                    <td>{{clientes.nit}}</td>
+                                                    <td>{{clientes.nombre}}</td>
+                                                    <td>{{clientes.ciudad}}</td>
+                                                    <td>{{clientes.empresa}}</td>
+                                                </tr>
+                                            {%endfor%}
+                                        {%endif%} 
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="infoModal1" style="display: none;background-color: rgba(255, 255, 255, 0.219608);"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.page-content -->
+{% endblock %}
+{# <img id="AccionLoad" class="hide" src="{{'template/loaders/bar120.gif'|baseUrl}}">  #}
+{% block js_custom %}
+    <!-- DataTables -->
+    <script type="text/javascript" src="{{'template/jquery/jquery.dataTables.min.js'|baseUrl}}"></script>
+    <script type="text/javascript" src="{{'template/jquery/jquery.dataTables.bootstrap.min.js'|baseUrl}}"></script>
+    <!-- Custom -->
+    <script type="text/javascript" src="{{'application/scripts/clientes/lista.js'|baseUrl}}"></script>
+{% endblock %}

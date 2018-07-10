@@ -1,0 +1,138 @@
+{% extends "pageMaster.twig" %}
+{% block style_plugin %}
+{% endblock %}
+{% block content %}
+    <div class="page-content">
+        <div class="row">
+            <div id="datosInfo"></div>
+            <div class="col-xs-12 col-sm-3 widget-container-col ui-sortable">
+                <div class="widget-box ui-sortable-handle widget-color-dark">
+                    <div class="widget-header">
+                        <h5 class="widget-title">Opciones</h5>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">
+                                        <span class="label label-success">Estado:</span>
+                                    </label>
+                                    <div class="col-sm-6">
+                                        <select id="CodEstadoEmpleado" name="CodEstadoEmpleado" class="form-control">
+                                            {% if selectEstado %}
+                                                <option value=""> - Selecione Uno - </option>
+                                                {%for estados in selectEstado%}
+                                                    <option value="{{estados.codigo}}" >{{estados.nombre}}</option>
+                                                {%endfor%}
+                                            {% else %}
+                                                <option value=""></option>
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">
+                                        <span class="label label-success">Cargo:</span>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <select id="IdCargo" name="IdCargo" class="form-control">
+                                            {% if selectCargo %}
+                                                <option value=""> - Selecione Uno - </option>
+                                                {%for cargos in selectCargo%}
+                                                    <option value="{{cargos.codigo}}" >{{cargos.nombre}}</option>
+                                                {%endfor%}
+                                            {% else %}
+                                                <option value=""></option>
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">
+                                        <span class="label label-success">Cedula</span>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        <input type="text" id="Cedula" placeholder="Cedula" onkeypress="return SoloNumeros(event)" autocomplete="off" maxlength="13" onkeyup="this.value = $.trim(this.value)" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="widget-toolbox padding-8 clearfix">
+                            <button id="Consulta" type="button" class="btn btn-xs btn-success pull-right">
+                                <span class="bigger-110">Buscar</span> <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+                            </button>
+                            <img id="AccionLoad" class="hide" src="{{'template/images/loaders/bar120.gif'|baseUrl}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-9 widget-container-col ui-sortable">
+                <div class="widget-box ui-sortable-handle widget-color-green2">
+                    <div class="widget-header">
+                        <h5 class="widget-title">Resultados</h5>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div class="row">
+                                <div class="pull-left">
+                                    <div class="btn-group">
+                                        <button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle" aria-expanded="false">
+                                            Opciones  <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-success">
+                                            <li><a id="Nuevo"><i class="fa fa-plus"></i> Nuevo</a></li>
+                                            <li><a id="Actualizar"><i class="fa fa-edit"></i> Editar</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button data-toggle="dropdown" class="btn btn-primary btn-sm dropdown-toggle" aria-expanded="false">
+                                            Mas  <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-blue">
+                                            <li><a id="Restablecer"><i class="fa fa-key"></i> Clave</a></li>
+                                            <li><a id="Estado"><i class="fa fa-exchange"></i> Estado</a></li>
+                                            <li class="divider"></li>
+                                            <li><a id="Permisos"><i class="fa fa-gavel"></i> Permisos</a></li>
+                                            <li><a id="Funciones"><i class="fa fa-gears"></i> Funciones</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="pull-right">
+                                    <div class="btn-group">
+                                        <button id="Ver" type="button" class="btn btn-info btn-white"><i class="fa fa-info-circle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <table id="listausuarios" class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Cedula</th>
+                                            <th>Nombres</th>
+                                            <th>Apellidos</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead> 
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="datos" style="display: none;" title="Informacion Dosimetro"></div>
+                        <div id="dialog-confirm" title="Restablece Clave" style="display: none;">
+                            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>La contraseña de este usuario sera restablecida, esta seguro de aplicar?</p>
+                        </div>
+                        <div id="dialogoEstado" style="display: none;background-color: rgba(255, 255, 255, 0.219608);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js_custom %}
+    <!-- DataTables -->
+    <script type="text/javascript" src="{{'template/jquery/jquery.dataTables.min.js'|baseUrl}}"></script>
+    <script type="text/javascript" src="{{'template/jquery/jquery.dataTables.bootstrap.min.js'|baseUrl}}"></script> 
+    <!-- Custom -->
+    <script type="text/javascript" src="{{'application/scripts/sistema/usuarios.js'|baseUrl}}"></script>
+{% endblock %}

@@ -1,0 +1,10 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix} Copyright (C) ${date?date?string("yyyy")} Sistemas 
+${licensePrefix} Gnesis App - CR EQUIPOS SA
+${licensePrefix?replace(" +$", "", "r")}
+${licensePrefix} Archivo Creado por Zeraling
+<#if licenseLast??>
+${licenseLast}
+</#if>

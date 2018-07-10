@@ -1,0 +1,128 @@
+{% extends "pageMaster.twig" %}
+{% block style_plugin %}
+    <!-- Select2 --> 
+    <link rel="stylesheet" href="{{ 'plugins/select2/select2.min.css'|baseUrl}}" />
+{% endblock %}
+
+{% block content %}
+    <div class="page-content">
+        <div class="row">
+            <form  id="registrarusuarios" method="POST" name="registrarusuarios">
+                <div class="col-xs-12 col-sm-6 widget-container-col ui-sortable">
+                    <div class="widget-box widget-color-dark ui-sortable-handle">
+                        <div class="widget-header">
+                            <h5 class="widget-title">Opciones</h5>
+                            <div class="widget-toolbar no-border">
+                                <a href="#" id="limpiar" onclick="location.reload()" ><i class="ace-icon fa fa-refresh"></i></a>
+                            </div>
+                        </div>
+                        <div class="widget-body">
+                            <div class="widget-main">
+                                {% set codigo = (empleado)?(['value="', empleado.cedula,'"']|join) :'value=""'  %}
+                                <input type="hidden" name="Codigo" id="Codigo" {{codigo|raw}}/>
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <div class="col-sm-4 control-label control-label">
+                                            <label class="label label-important">Cedula:</label>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <span></span>
+                                            {% set cedula = (empleado)?(['value="', empleado.cedula,'" readonly="readonly"']|join) :'value=""'  %}
+                                            <input type="text" name="Cedula" placeholder="Cedula" id="Cedula" onkeypress="return gearsPage.SoloNumeros(event)" class="{required:true,minlength:1,messages:{required:'* Favor digite No. Cedula'}} form-control" {{cedula|raw}}/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-4 control-label">
+                                            <label class="label label-important">Nombres:</label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span></span>
+                                            {% set nombres = (empleado)?(['value="', empleado.nombres,'"']|join) :'value=""'  %}
+                                            <input type="text" name="Nombres"  placeholder="Nombres" onkeypress="return gearsPage.soloLetras(event)" onkeyup="this.value = this.value.toLowerCase()" class="{required:true,minlength:3,messages:{required:'* Favor digite un Nombre'}} form-control" {{nombres|raw}}>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-4 control-label">
+                                            <label class="label label-important">Apellidos:</label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span></span>
+                                            {% set apellidos = (empleado)?(['value="', empleado.apellidos,'"']|join) :'value=""'  %}
+                                            <input type="text" name="Apellidos" placeholder="Apellidos" onkeypress="return gearsPage.soloLetras(event)" onkeyup="this.value = this.value.toLowerCase()" class="{required:true,minlength:4,messages:{required:'* Favor digite un Apellido'}} form-control" {{apellidos|raw}}/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-4 control-label">
+                                            <label class="label label-important">Empresa:</label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span></span>
+                                            <select id="empresas" name="empresas[]" multiple="multiple" class="{required:true} form-control">
+                                                {% if selectEmpresa %}
+                                                    {%for empresas in selectEmpresa%}
+                                                        {% set empresa = (empleado and empresas.asign!=null)?'selected="selected"':'' %}
+                                                        <option value="{{empresas.codigo}}" {{empresa}} >{{empresas.nombre}}</option>
+                                                    {%endfor%}
+                                                {% else %}
+                                                    <option value=""></option>
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-4 control-label">
+                                            <label class="label label-important">Cargo:</label>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <span></span>
+                                            <select id="IdCargo" name="IdCargo" class="{required:true} form-control">
+                                                {% if selectCargo %}
+                                                    <option value=""> - Selecione Uno - </option>
+                                                    {%for cargos in selectCargo%}
+                                                        {% set cargo = (empleado and empleado.id_cargo==cargos.codigo)?'selected="selected"':'' %}
+                                                        <option value="{{cargos.codigo}}" {{cargo}} >{{cargos.nombre}}</option>
+                                                    {%endfor%}
+                                                {% else %}
+                                                    <option value=""></option>
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-4 control-label">
+                                            <label class="label label-important">Correo:</label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span></span>
+                                            {% set correo = (empleado)?(['value="', empleado.correo,'"']|join) :'value=""'  %}
+                                            <input type="text" name="Correo" placeholder="Correo" class="{required:true,email:true,messages:{required:'* Favor Digite un correo',email:'* Favor Ingrese un correo valido'}} form-control" onkeyup="this.value = this.value.toLowerCase()" {{correo|raw}}/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget-toolbox padding-8 clearfix">
+                                <div class="row">
+                                    <div class="col-sm-9 col-sm-offset-3">
+                                        <button type="submit" class="btn btn-success">Guardar</button>
+                                        <button id="btnVolver" type="button" class="btn btn-default">Volver</button> 
+                                    </div>
+                                </div>
+                                <img id="AccionLoad" class="hide" src="{{'template/images/loaders/bar120.gif'|baseUrl}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block js_custom %}
+    <!-- Select2 --> 
+    <script type="text/javascript" src="{{ 'plugins/select2/select2.min.js'|baseUrl}}"></script>
+    <!-- Validate --> 
+    <script type="text/javascript" src="{{ 'plugins/jquery-validate/dist/jquery.validate.min.js'|baseUrl}}"></script>
+    <script type="text/javascript" src="{{ 'plugins/jquery-validate/lib/jquery.metadata.js'|baseUrl}}"></script>
+    <script type="text/javascript" src="{{ 'plugins/jquery-validate/localization/messages_es.js'|baseUrl}}"></script> 
+    <!-- Custom -->
+    <script type="text/javascript" src="{{'application/scripts/sistema/form.js'|baseUrl}}"></script>
+{% endblock %}

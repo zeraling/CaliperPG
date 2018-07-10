@@ -1,0 +1,143 @@
+{% extends "pageMaster.twig" %}
+{% block content %}
+    <div class="page-content">
+        <div class="row">
+            <div id="mensaje"></div>
+            <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+                <div class="hr dotted"></div>
+                <div>
+                    <div id="user-profile-2" class="user-profile">
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs padding-18">
+                                <li class="active"><a href="{{'empleado'|baseUrl}}"><i class="green ace-icon fa fa-user bigger-120"></i> Perfil</a></li>
+                                <li><a href="#"><i class="blue ace-icon fa fa-gears bigger-120"></i> Funciones</a></li>
+                            </ul>
+                            <div class="tab-content tab-content-bg padding-24">
+                                <div id="perfil" class="tab-pane in active">
+                                    {%if mensajeClave %}
+                                        <div class="row">
+                                            <div class="alert alert-info">
+                                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                <i class="fa fa-info-circle"></i> Para continuar debe realizar la actualizacion de su clave de usuario
+                                            </div>
+                                        </div>
+                                    {%endif %}
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-3 center">
+                                            <span class="profile-picture">
+                                                <img class="editable img-responsive" alt="Avatar" id="avatar2" src="template/images/avatars/profile-pic.jpg" />
+                                            </span>
+                                            <div class="space space-4"></div>
+                                            <button id="CambiaAcceso" type="button" class="btn btn-sm btn-block btn-success">
+                                                <i class="ace-icon fa fa-lock bigger-120"></i><span class="bigger-110"> Clave</span>
+                                            </button>
+                                            <img class="hide" id="loaderAjax" src="{{'template/images/loaders/ajax-loader-5.gif'|baseUrl}}">
+                                        </div><!-- /.col -->
+
+                                        <div class="col-xs-12 col-sm-9">
+                                            <h4 class="blue">
+                                                <span class="label label-success arrowed-in-right">
+                                                    <i class="ace-icon fa fa-circle smaller-80 align-middle"></i> {{user.cedula}}
+                                                </span>
+                                            </h4>
+                                            <div class="profile-user-info profile-user-info-striped">
+                                                <div class="profile-info-row">
+                                                    <div class="profile-info-name"> Nombre </div>
+                                                    <div class="profile-info-value">
+                                                        <span>{{user.nombres~' '~user.apellidos}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div class="profile-info-name"> Cargo </div>
+                                                    <div class="profile-info-value">
+                                                        <span>{{user.cargo}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div class="profile-info-name"> Creado </div>
+                                                    <div class="profile-info-value">
+                                                        <span>{{user.fecha_creacion|date("d/m/Y")}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div class="profile-info-name">Online </div>
+                                                    <div class="profile-info-value">
+                                                        <span>Ahora</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="hr hr-8 dotted"></div>
+                                            <div class="profile-user-info">
+                                                <div class="profile-info-row">
+                                                    <div class="profile-info-name"> Correo </div>
+                                                    <div class="profile-info-value">{{user.correo}}</div>
+                                                </div>
+                                            </div>
+                                        </div><!-- /.col -->
+                                    </div><!-- /.row -->
+                                    <div class="space-20"></div>
+
+                                    <div id="updateAcces" class="row hide">
+                                        <div class="col-xs-12 col-sm-12">
+                                            <div class="widget-box transparent">
+                                                <div class="widget-header widget-header-small">
+                                                    <h4 class="widget-title smaller">
+                                                        <i class="ace-icon fa fa-check-square-o bigger-110"></i>Actualizar Clave
+                                                    </h4>
+                                                </div>
+                                                <div class="widget-body">
+                                                    <form  id="actualizaClave" method="POST" name="actualizaClave">
+                                                        <div class="widget-main">
+                                                            <div class="form-horizontal">
+                                                                <div class="form-group">
+                                                                    <div class="col-sm-3 control-label ">
+                                                                        <label class="label label-important">Nueva Clave:</label>
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <span></span>
+                                                                        <input type="password" id="clave" name="clave" placeholder="Clave" class="{required:true,minlength:5 ,messages:{required:'* Favor digite Contrase&ntilde;a',minlength:'* la contrase&ntilde;a debe tener minimo 5 caracteres'}} form-control"/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="col-sm-3 control-label ">
+                                                                        <label class="label label-important">Confirma Clave:</label>
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <span></span>
+                                                                        <input type="password" id="reclave" name="reclave" placeholder="Confirmar Clave" class="{required:true,minlength:5,equalTo:'#clave', messages:{required:'* Confirme la contrase&ntilde;a',minlength:'* la contrase&ntilde;a debe tener minimo 5 caracteres', equalTo:'* La contrase&ntilde;a no coincide'}} form-control"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="widget-toolbox padding-8 clearfix">
+                                                            <div class="row">
+                                                                <div class="col-sm-9 col-sm-offset-3">
+                                                                    <button type="submit" class="btn btn-success">Guardar</button>
+                                                                </div>
+                                                            </div>
+                                                            <img id="AccionLoad" class="hide" src="{{'template/images/loaders/bar120.gif'|baseUrl}}">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div><!-- /#perfil --> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- PAGE CONTENT ENDS -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.page-content -->
+{% endblock %}
+{% block js_custom %}
+    <!-- Validate --> 
+    <script type="text/javascript" src="{{ 'plugins/jquery-validate/dist/jquery.validate.min.js'|baseUrl}}"></script>
+    <script type="text/javascript" src="{{ 'plugins/jquery-validate/lib/jquery.metadata.js'|baseUrl}}"></script>
+    <script type="text/javascript" src="{{ 'plugins/jquery-validate/localization/messages_es.js'|baseUrl}}"></script> 
+    <!-- Custom -->
+    <script type="text/javascript" src="{{'application/scripts/dashboard/perfil.js'|baseUrl}}"></script>
+{% endblock %}

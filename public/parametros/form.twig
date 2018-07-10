@@ -1,0 +1,76 @@
+{% extends "pageMaster.twig" %}
+{% block style_plugin %}
+    <!-- Select2 --> 
+    <link rel="stylesheet" href="{{ 'plugins/select2/select2.min.css'|baseUrl}}" />
+{% endblock %}
+
+{% block content %}
+    <div class="page-content">
+        <div class="row">
+            <form  id="regParametros" method="POST" name="regParametros">
+                <div class="col-xs-12 col-sm-6 widget-container-col">
+                    <div class="widget-box widget-color-dark">
+                        <div class="widget-header">
+                            <h5 class="widget-title">Opciones</h5>
+                        </div>
+                        <div class="widget-body">
+                            <div class="widget-main">
+                                {% set codigo = (tipoEq)?(['value="', tipoEq.id,'"']|join) :'value=""'  %}
+                                <input type="hidden" name="Codigo" id="Codigo" {{codigo|raw}}/>
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <div class="col-sm-4 control-label">
+                                            <label class="label label-important">Nombres:</label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span></span>
+                                            {% set nombre = (tipoEq)?(['value="', tipoEq.nombre,'"']|join) :'value=""'  %}
+                                            <input type="text" name="Nombre"  placeholder="Nombre" onkeypress="return gearsPage.soloLetras(event)" onkeyup="this.value=this.value.toUpperCase()" class="{required:true,minlength:3,messages:{required:'* Favor digite un Nombre'}} form-control" {{nombre|raw}}>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-4 control-label">
+                                            <label class="label label-important">Parametros:</label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span></span>
+                                            <select id="parametros" name="parametros[]" multiple="multiple" class="{required:true} form-control">
+                                                {% if listParametros %}
+                                                    {%for parametros in listParametros%}
+                                                        {% set parametro = (tipoEq and parametros.asign!=null)?'selected="selected"':'' %}
+                                                        <option value="{{parametros.id}}" {{parametro}} >{{parametros.nombre}}</option>
+                                                    {%endfor%}
+                                                {% else %}
+                                                    <option value=""></option>
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget-toolbox padding-8 clearfix">
+                                <div class="row">
+                                    <div class="col-sm-9 col-sm-offset-3">
+                                        <button type="submit" class="btn btn-success">Guardar</button>
+                                        <button id="btnVolver" type="button" class="btn btn-default">Volver</button> 
+                                    </div>
+                                </div>
+                                <img id="AccionLoad" class="hide" src="{{'template/images/loaders/bar120.gif'|baseUrl}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block js_custom %}
+    <!-- Select2 --> 
+    <script type="text/javascript" src="{{ 'plugins/select2/select2.min.js'|baseUrl}}"></script>
+    <!-- Validate --> 
+    <script type="text/javascript" src="{{ 'plugins/jquery-validate/dist/jquery.validate.min.js'|baseUrl}}"></script>
+    <script type="text/javascript" src="{{ 'plugins/jquery-validate/lib/jquery.metadata.js'|baseUrl}}"></script>
+    <script type="text/javascript" src="{{ 'plugins/jquery-validate/localization/messages_es.js'|baseUrl}}"></script> 
+    <!-- Custom -->
+    <script type="text/javascript" src="{{'application/scripts/parametros/form.js'|baseUrl}}"></script>
+{% endblock %}

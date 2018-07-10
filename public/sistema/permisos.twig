@@ -1,0 +1,95 @@
+{% extends "pageMaster.twig" %}
+{% block style_plugin %}
+     <!-- iCheck -->
+    <link rel="stylesheet" href="{{'plugins/icheck/flat/blue.css'|baseUrl}}">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{'plugins/select2/select2.min.css'|baseUrl}}">
+{% endblock %}
+{% block content %}
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 widget-container-col">
+                <div class="widget-box widget-color-blue">
+                    <div class="widget-header">
+                        <h4 class="widget-title">Listado de Permisos</h4>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div class="form-group">
+                                <label>Empleado:</label>
+                                <div class="input-group">
+                                    <select id="selectEmpleado" name="selectEmpleado"  class="form-control select2">
+                                        {% if empleados %}
+                                            <option value="">- Seleccione Uno -</option>
+                                            {% for personal in empleados %}
+                                                <option value="{{personal.cedula}}">{{ personal.nombres~' '~personal.apellidos}} </option>
+                                            {% endfor%}
+                                        {% else %}
+                                            <option value="">No se han Cargado Datos</option>
+                                        {% endif %}
+                                    </select>
+                                    <span class="input-group-btn">
+                                        <button id="consultarFunciones" class="btn btn-sm btn-primary"><i class="fa fa-info"></i></button>
+                                    </span>
+                                </div> 
+                            </div>
+                            <div class="table-responsive">
+                                <input type="hidden" id="idEmpleado" >
+                                {% if permisos %}
+                                <table class="table table-hover table-striped">
+                                        {% for modulos in permisos %} 
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="4">{{ modulos.nombre | upper }}</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>Codigo</th>
+                                                    <th style="width: 300px">Funcion</th>
+                                                    <th>Descripcion</th>
+                                                    <th>Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% if modulos.funciones %}
+                                                    {% for funciones in modulos.funciones %}
+                                                        <tr>
+                                                            <td>{{funciones.codigo}}</td>
+                                                            <td>{{funciones.nombre}}</td>
+                                                            <th>{{funciones.descripcion }}</th>
+                                                                {%set checkbx=['id="funcion-',funciones.codigo,'" data="',funciones.codigo,'"']|join %}
+                                                            <td><input {{checkbx|raw}} type="checkbox"></td>
+                                                        </tr>
+                                                    {%endfor%}
+                                                {%endif%}
+                                            </tbody>
+                                        {%endfor%}
+                                </table>
+                                {%endif%}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="widget-toolbox padding-8 clearfix">
+                        <div class="row">
+                            <div class="pull-left">
+                                <button type="button" class="btn btn-default"><i class="fa fa-reply"></i></button> 
+                            </div>
+                            <img id="AccionLoad" class="hide" src="{{'template/loaders/bar120.gif'|baseUrl}}">
+                        </div>
+                    </div>
+                </div>
+                <!-- /. box -->
+            </div>
+            <!-- /.col -->
+        </div>
+    </div><!-- /.page-content -->
+{% endblock %}
+{% block js_custom %}
+    <!-- Select2 -->
+    <script type="text/javascript" src="{{'plugins/select2/select2.min.js'|baseUrl}}"></script>
+    <!-- iCheck -->
+    <script type="text/javascript" src="{{'plugins/icheck/icheck.min.js'|baseUrl}}"></script>
+    <!-- Custom -->
+    <script type="text/javascript" src="{{'application/scripts/sistema/permisos.js'|baseUrl}}"></script>
+{% endblock %}

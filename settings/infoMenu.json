@@ -1,0 +1,72 @@
+[
+    {
+        "id": 0,
+        "nombre": "Inicio",
+        "stateMenu": false,
+        "icon": "menu-icon fa fa-home",
+        "class": "DashBoardPage",
+        "link": "",
+        "opciones": [],
+        "vistas": []
+    },
+    {
+        "id": 1,
+        "nombre": "Informes",
+        "stateMenu": false,
+        "icon": "menu-icon fa fa-file-text-o",
+        "class": "InformesPage",
+        "link": "informes",
+        "vistas": ["informes", "informes/form"],
+        "opciones": []
+    },
+    {
+        "id": 2,
+        "nombre": "Clientes",
+        "stateMenu": false,
+        "icon": "menu-icon fa fa-building-o",
+        "class": "ClientesPage",
+        "link": "clientes",
+        "vistas": ["clientes", "clientes/form"],
+        "opciones": []
+    },
+    {
+        "id": 3,
+        "nombre": "Equipos",
+        "stateMenu": false,
+        "icon": "menu-icon fa fa-desktop",
+        "class": "EquiposPage",
+        "link": "equipos",
+        "vistas": ["equipos", "equipos/form"],
+        "opciones": []
+    },
+    {
+        "id": 4,
+        "nombre": "Patrones",
+        "stateMenu": false,
+        "icon": "menu-icon fa fa-clone",
+        "class": "EquiposPatronesPage",
+        "link": "patrones",
+        "vistas": ["patrones", "patrones/form"],
+        "opciones": []
+    },
+    {
+        "id": 5,
+        "nombre": "Parametros",
+        "stateMenu": false,
+        "icon": "menu-icon fa fa-rocket",
+        "class": "ParametrosPage",
+        "link": "parametros",
+        "vistas": ["parametros", "parametros/form"],
+        "opciones": []
+    },
+    {
+        "id": 6,
+        "nombre": "Sistema",
+        "stateMenu": false,
+        "icon": "menu-icon fa fa-gears",
+        "class": "EmpleadosPage",
+        "link": "usuarios",
+        "vistas": ["usuarios", "usuarios/form", "usuarios/funciones"],
+        "opciones": []
+    }
+]

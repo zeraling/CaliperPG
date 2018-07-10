@@ -1,0 +1,70 @@
+{% set navInicio = menuOptions[0] %}
+{% set navInformes = menuOptions[1] %}
+{% set navClientes = menuOptions[2] %}
+{% set navEquipos = menuOptions[3] %}
+{% set navPatrones = menuOptions[4] %}
+{% set navParametros = menuOptions[5] %}
+{% set navSistema = menuOptions[6] %}
+
+<ul class="nav nav-list nav-list-font-cr">
+    {% if dtaAcces[0].estado == 1 %}
+        <li {{ navInicio.stateMenu == true ? 'class="active hover"' : 'class="hover"' }} >
+            <a href="{{ navInicio.link |baseUrl }}">
+                <i class="{{ navInicio.icon }}"></i>
+                <span class="menu-text">{{ navInicio.nombre }}</span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+    {%endif%}
+    
+    <li {{ navInformes.stateMenu == true ? 'class="active hover"' : 'class="hover"' }} >
+        <a href="{{ navInformes.link |baseUrl }}">
+            <i class="{{ navInformes.icon }}"></i>
+            <span class="menu-text">{{ navInformes.nombre }}</span>
+        </a>
+        <b class="arrow"></b>
+    </li>
+    
+    <li {{ navClientes.stateMenu == true ? 'class="active hover"' : 'class="hover"' }} >
+        <a href="{{ navClientes.link |baseUrl }}">
+            <i class="{{ navClientes.icon }}"></i>
+            <span class="menu-text">{{ navClientes.nombre }}</span>
+        </a>
+        <b class="arrow"></b>
+    </li>
+    
+    <li {{ navEquipos.stateMenu == true ? 'class="active hover"' : 'class="hover"' }} >
+        <a href="{{ navEquipos.link |baseUrl }}">
+            <i class="{{ navEquipos.icon }}"></i>
+            <span class="menu-text">{{ navEquipos.nombre }}</span>
+        </a>
+        <b class="arrow"></b>
+    </li>
+    
+    <li {{ navPatrones.stateMenu == true ? 'class="active hover"' : 'class="hover"' }} >
+        <a href="{{ navPatrones.link |baseUrl }}">
+            <i class="{{ navPatrones.icon }}"></i>
+            <span class="menu-text">{{ navPatrones.nombre }}</span>
+        </a>
+        <b class="arrow"></b>
+    </li>
+    
+    <li {{ navParametros.stateMenu == true ? 'class="active hover"' : 'class="hover"' }} >
+        <a href="{{ navParametros.link |baseUrl }}">
+            <i class="{{ navParametros.icon }}"></i>
+            <span class="menu-text">{{ navParametros.nombre }}</span>
+        </a>
+        <b class="arrow"></b>
+    </li>
+    
+    {% if dtaAcces[0].estado == 1 %}
+        <li {{ navSistema.stateMenu == true ? 'class="active hover"' : 'class="hover"' }} >
+            <a href="{{ navSistema.link |baseUrl }}">
+                <i class="{{ navSistema.icon }}"></i>
+                <span class="menu-text">{{ navSistema.nombre }}</span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+    {%endif%}
+    
+</ul>
