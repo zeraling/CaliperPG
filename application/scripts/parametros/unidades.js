@@ -8,15 +8,12 @@
 var oTable;
 $(document).ready(function () {
 
-    oTable = $('#listaMarcas').dataTable({
-        "sScrollX": "100%",
-        "sScrollXInner": "110%",
-        "bScrollCollapse": true,
+    oTable = $('#listaUnidades').dataTable({
         "pagingType": "numbers",
         "oLanguage": gearsPage.idiomaTablas()
     });
 
-    $('#agregarMarca').click(function () {
+    $('#agregarUnidad').click(function () {
         $('#Codigo').val('');
         $('#Nombre').val('');
         $('#formOpciones').show();
@@ -33,12 +30,12 @@ $(document).ready(function () {
         if (idData > 0) {
             $.ajax({
                 cache: false, type: "POST",
-                url: gearsPage.urlServer('Marcas'),
+                url: gearsPage.urlServer('Unidades'),
                 dataType:'json',
                 data: 'id=' + idData + '&accion=dataParam',
                 success: function (datos) {
                     console.log(datos);
-                    $('#Codigo').val(datos.codigo);
+                    $('#Codigo').val(datos.id);
                     $('#Nombre').val(datos.nombre);
                     $('#formOpciones').show();
                 }
@@ -47,15 +44,15 @@ $(document).ready(function () {
     });
 
 
-    $('#regMarca').validate({
+    $('#regUnidad').validate({
 
         submitHandler: function () {
-            var str = $('#regMarca').serialize();
+            var str = $('#regUnidad').serialize();
             var cod = $("input[name=Codigo]:hidden").val();
             if (cod > 0) {
                 $.ajax({
                     cache: false, type: "POST",
-                    url: gearsPage.urlServer('Marcas'),
+                    url: gearsPage.urlServer('Unidades'),
                     data: str + "&accion=Actualizar",
                     beforeSend: function () {
                         $('#AccionLoad').show();
@@ -65,7 +62,7 @@ $(document).ready(function () {
                             var text = 'Ocurrio un Error, No Se Completo ta Tarea. No se Altero Ningun Registro..!';
                             var class_name = 'gritter-error';
                         } else {
-                            var text = 'Se actualizo el nombre de la marca correctamente!';
+                            var text = 'Se actualizo la informacion de la unidad correctamente!';
                             var class_name = 'gritter-success';
                         }
                         $('#Codigo').val('');
@@ -83,14 +80,14 @@ $(document).ready(function () {
             } else {
                 $.ajax({
                     cache: false, type: "POST",
-                    url: gearsPage.urlServer('Marcas'),
+                    url: gearsPage.urlServer('Unidades'),
                     data: str + "&accion=Guardar",
                     beforeSend: function () {
                         $('#AccionLoad').show();
                     }, success: function (datos) {
                         var item = JSON.parse(datos);
                         if (item.respuesta === true) {
-                            var text = 'Se Registro la marca correctamente..!';
+                            var text = 'Se Registro la unidad correctamente..!';
                             var class_name = 'gritter-success';
                             $('#Codigo').val('');
                             $('#Nombre').val('');

@@ -8,7 +8,6 @@
 
 namespace Application\Controllers;
 
-use Application\Access\MarcasDA;
 
 /**
  * Description of MarcasCL
@@ -20,7 +19,7 @@ class MarcasCL {
     private $serviceData;
 
     function __construct() {
-        $MarcasService = new MarcasDA();
+        $MarcasService = new \Application\Access\MarcasDA();
         $this->serviceData = $MarcasService;
     }
 
@@ -55,7 +54,7 @@ class MarcasCL {
         }
     }
 
-    public function AgregarMarca(\Application\Data\MarcasVO $marca) {
+    public function AgregarMarca($marca) {
         try {
             $lista = $this->serviceData->Agregar($marca);
             return $lista;
@@ -64,9 +63,9 @@ class MarcasCL {
         }
     }
 
-    public function ActualizarMarca(\Application\Data\MarcasVO $marca) {
+    public function ActualizarMarca($code,$marca) {
         try {
-            $lista = $this->serviceData->Actualizar($marca);
+            $lista = $this->serviceData->Actualizar($code,$marca);
             return $lista;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

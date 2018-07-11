@@ -1,27 +1,28 @@
 <?php
 
 /*
- * Copyright (C) 2018 Sistemas CR EQUIPOS SA
+ *  Copyright (C) 2018 Sistemas 
+ *  Gnesis App - CR EQUIPOS SA
  *
  *  Archivo Creado por Zeraling
  */
 
 namespace Application\Access;
-
 use PDO;
 use PDOException;
 use Application\Connections\CaliperDB;
 use Application\AppLog;
 
 /**
- * Description of MarcasDA
+ * Description of UnidadesparametrosDA
  *
  * @author Usuario
  */
-class MarcasDA {
-
+class UnidadesparametrosDA {
+    //put your code here
+    
     public function Lista() {
-        $consulta = "select * from marcas order by marcas.nombre ASC";
+        $consulta = "SELECT unidadesparametros.* FROM unidadesparametros";
         $dataBase = new CaliperDB();
         try {
             // preparar el DML a ejecutar
@@ -36,15 +37,14 @@ class MarcasDA {
         }
     }
 
-    public function UnaMarca($id) {
-
-        $consulta = 'select * from marcas where marcas.codigo=:codigo';
+    public function Verificar($unidad) {
+        $consulta = "SELECT unidadesparametros.id FROM unidadesparametros WHERE unidadesparametros.nombre=:unid";
         $dataBase = new CaliperDB();
         try {
             // preparar el DML a ejecutar
             $query = $dataBase->prepare($consulta);
             // ejecutar la consulta
-            $query->execute([':codigo' => $id]);
+            $query->execute([':unid' => $unidad]);
             // procesamos el resultado de la consulta
             $resultados = $query->fetchAll(PDO::FETCH_OBJ);
             return $resultados;
@@ -55,54 +55,15 @@ class MarcasDA {
         }
     }
 
-    public function Verificar($marca) {
+    public function Agregar($unidad) {
 
-        $consulta = 'select * from marcas where marcas.nombre=:nombre';
+        $consulta = "INSERT INTO unidadesparametros(nombre)VALUES(:unida)";
         $dataBase = new CaliperDB();
         try {
             // preparar el DML a ejecutar
             $query = $dataBase->prepare($consulta);
-            // ejecutar la consulta
-            $query->execute([':nombre' => $marca]);
-            // procesamos el resultado de la consulta
-            $resultados = $query->fetchAll(PDO::FETCH_OBJ);
-            return $resultados;
-        } catch (PDOException $exc) {
-            // si ocurre algun error se genera la excepcion y se crea un log 
-            AppLog::logDebug($exc->getMessage(), $exc->getFile(), $exc->getLine());
-            return null;
-        }
-    }
+            $query->bindValue(':unida', $unidad, PDO::PARAM_STR);
 
-    public function Agregar($marca) {
-
-        $consulta = "insert into marcas(nombre)values(:nombre)";
-        //instancia y conexion a base de datos
-        $dataBase = new CaliperDB();
-        try {
-            // preparar el DML a ejecutar
-            $query = $dataBase->prepare($consulta);
-            $query->bindValue(':nombre', $marca, PDO::PARAM_STR);
-            // ejecutar la consulta
-            $query->execute();
-            // devolvemos el ultimo identificador insertado
-            $identidad = $dataBase->lastInsertId();
-            return $identidad;
-        } catch (PDOException $exc) {
-            // si ocurre algun error se genera la excepcion y se crea un log 
-            AppLog::logDebug($exc->getMessage(), $exc->getFile(), $exc->getLine());
-            return null;
-        }
-    }
-
-    public function Actualizar($codigo, $marca) {
-        $consulta = "update marcas set nombre=:nombre where marcas.codigo=:codigo";
-        $dataBase = new CaliperDB();
-        try {
-            // preparar el DML a ejecutar
-            $query = $dataBase->prepare($consulta);
-            $query->bindValue(':codigo', $codigo, PDO::PARAM_INT);
-            $query->bindValue(':nombre', $marca, PDO::PARAM_STR);
             // ejecutar la consulta
             $eject = $query->execute();
             // devolvemos el estado del resultado de la consulta
@@ -114,4 +75,42 @@ class MarcasDA {
         }
     }
 
+    public function Actualizar($code, $unidad) {
+        $consulta = "UPDATE unidadesparametros SET nombre=:unida WHERE unidadesparametros.id=:code";
+        $dataBase = new CaliperDB();
+        try {
+            // preparar el DML a ejecutar
+            $query = $dataBase->prepare($consulta);
+            $query->bindValue(':code', $code, PDO::PARAM_INT);
+            $query->bindValue(':unida', $unidad, PDO::PARAM_STR);
+            // ejecutar la consulta
+            $eject = $query->execute();
+            // devolvemos el estado del resultado de la consulta
+            return $eject;
+        } catch (PDOException $exc) {
+            // si ocurre algun error se genera la excepcion y se crea un log 
+            AppLog::logDebug($exc->getMessage(), $exc->getFile(), $exc->getLine());
+            return false;
+        }
+    }
+    
+    public function UnaUnidad($code) {
+        $consulta = "SELECT unidadesparametros.* FROM unidadesparametros WHERE unidadesparametros.id=:code";
+        $dataBase = new CaliperDB();
+        try {
+            // preparar el DML a ejecutar
+            $query = $dataBase->prepare($consulta);
+            // ejecutar la consulta
+            $query->execute([':code' => $code]);
+            // procesamos el resultado de la consulta
+            $resultados = $query->fetchAll(PDO::FETCH_OBJ);
+            return $resultados;
+        } catch (PDOException $exc) {
+            // si ocurre algun error se genera la excepcion y se crea un log 
+            AppLog::logDebug($exc->getMessage(), $exc->getFile(), $exc->getLine());
+            return null;
+        }
+    }
+    
+    
 }

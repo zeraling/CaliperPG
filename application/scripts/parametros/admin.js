@@ -54,7 +54,7 @@ $(document).ready(function () {
                     }, success: function (datos) {
                         var item = JSON.parse(datos);
                         if (item.respuesta === true) {
-                            var text = 'Se Registro El Usuario con la Cedula ' + item.code + ' Correctamente..!';
+                            var text = 'Se registro el tipo de equipo correctamente!';
                             var class_name = 'gritter-success';
                             $("input[name=Codigo]:hidden").val(item.code);
                         } else if (item.respuesta === false && item.code === 'creado') {

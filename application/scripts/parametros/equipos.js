@@ -12,20 +12,16 @@ $(document).ready(function () {
         "sScrollX": "100%",
         "sScrollXInner": "110%",
         "bScrollCollapse": true,
+        "pagingType": "numbers",
         "oLanguage": gearsPage.idiomaTablas()
     });
     
     gearsPage.seleccionTablas('listaTipos',oTable);
 
-    $('#Parametros').click(function () {
-       location.href=gearsPage.baseUrl('parametros/lista');
-    });
 
     $('#Agregar').click(function () {
        location.href=gearsPage.baseUrl('parametros/admin');
     });
-    
-    
     
     $('#Actualizar').click(function () {
         var anSelected = gearsPage.fnGetSelected(oTable);
@@ -66,5 +62,12 @@ $(document).ready(function () {
         }
     });
     
+    $('#Parametros').click(function () {
+       location.href=gearsPage.baseUrl('parametros/lista');
+    });
+
+    $('#Unidades').click(function () {
+       location.href=gearsPage.baseUrl('parametros/unidades');
+    });
     
 });

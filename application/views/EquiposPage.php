@@ -21,15 +21,20 @@ class EquiposPage extends RenderPages{
     
     public function getIndex() {
         $tiposEquipos=new \Application\Controllers\TiposequiposCL();
-        $ListaEquipos=$tiposEquipos->ListaTiposEquipos();
+        $data['listTipos']=$tiposEquipos->ListaTiposEquipos();
         
-        
-        
+        $marcasEquipos=new \Application\Controllers\MarcasCL();
+        $data['listMarcas']=$marcasEquipos->ListaMarcas();
         
         return $this->render('equipos/lista.twig',$data);
     }
     
-    
+    public function getMarcas() {
+        $unidadesContrl = new \Application\Controllers\MarcasCL();
+        $data['listMarcas'] = $unidadesContrl->ListaMarcas();
+
+        return $this->render('equipos/marcas.twig', $data);
+    }
     
     
 }

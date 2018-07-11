@@ -12,6 +12,7 @@ $(document).ready(function () {
         "sScrollX": "100%",
         "sScrollXInner": "110%",
         "bScrollCollapse": true,
+        "pagingType": "numbers",
         "oLanguage": gearsPage.idiomaTablas()
     });
 

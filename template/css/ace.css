@@ -17965,7 +17965,7 @@ only screen and (min-resolution:144dpi) {
 }
 
 .gritter-item-wrapper.gritter-success {
-    background: rgba(113, 202, 124, 0.92);
+    background: #5fc36c;
 }
 
 .gritter-item-wrapper.gritter-warning {

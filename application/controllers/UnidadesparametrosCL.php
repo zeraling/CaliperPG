@@ -10,25 +10,25 @@
 namespace Application\Controllers;
 
 /**
- * Description of ParametrosCL
+ * Description of UnidadesparametrosCL
  *
  * @author Usuario
  */
-class ParametrosCL {
+class UnidadesparametrosCL {
     //put your code here
     
     private $serviceData;
     
     public function __construct() {
-        $parametrosService= new \Application\Access\ParametrosDA();
-        return $this->serviceData=$parametrosService;
+        $unidadesService= new \Application\Access\UnidadesparametrosDA();
+        return $this->serviceData=$unidadesService;
     }
 
     public function __destruct() {
          $this->serviceData;
     }
     
-    public function ListaParametros() {
+    public function ListaUnidades() {
         try {
             $lista=  $this->serviceData->Lista();
             return $lista;
@@ -37,36 +37,36 @@ class ParametrosCL {
         }
     }
 
-    public function VerificarParametro($parametro) {
+    public function VerificarUnidad($unidad) {
         try {
-            $lista = $this->serviceData->Verificar($parametro);
+            $lista = $this->serviceData->Verificar($unidad);
             return $lista;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function AgregarParametro($parametro) {
+    public function AgregarUnidad($unidad) {
         try {
-            $lista = $this->serviceData->Agregar($parametro);
+            $lista = $this->serviceData->Agregar($unidad);
             return $lista;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
     
-    public function ActualizarParametro($code,$parametro) {
+    public function ActualizarUnidad($code,$unidad) {
         try {
-            $lista = $this->serviceData->Actualizar($code,$parametro);
+            $lista = $this->serviceData->Actualizar($code,$unidad);
             return $lista;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function ConsultaUnParametro($code) {
+    public function ConsultaUnaUnidad($code) {
         try {
-            $lista = $this->serviceData->UnParametro($code);
+            $lista = $this->serviceData->UnaUnidad($code);
             return $lista;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

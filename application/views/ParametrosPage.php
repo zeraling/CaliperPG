@@ -49,4 +49,11 @@ class ParametrosPage extends RenderPages {
         return $this->render('parametros/admin.twig', $data);
     }
 
+    public function getUnidades() {
+        $unidadesContrl = new \Application\Controllers\UnidadesparametrosCL();
+        $data['listUnidades'] = $unidadesContrl->ListaUnidades();
+
+        return $this->render('parametros/unidades.twig', $data);
+    }
+    
 }

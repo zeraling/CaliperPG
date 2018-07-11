@@ -10,7 +10,7 @@
 //importa la ruta global
 require_once './settings/baseUrl.php';
 //incluye la carga automatica de dependencias 
-include_once './vendor/autoload.php';
+(file_exists('./vendor/autoload.php')) ? require_once './vendor/autoload.php' : die('Dependencias no Cargadas!');
 
 use Phroute\Phroute\RouteCollector;
 use Phroute\Phroute\Dispatcher;
