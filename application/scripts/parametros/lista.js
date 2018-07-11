@@ -8,66 +8,111 @@
 var oTable;
 $(document).ready(function () {
 
-    oTable = $('#listaTipos').dataTable({
+    oTable = $('#listaParametros').dataTable({
         "sScrollX": "100%",
         "sScrollXInner": "110%",
         "bScrollCollapse": true,
         "oLanguage": gearsPage.idiomaTablas()
     });
-    
-    gearsPage.seleccionTablas('listaTipos',oTable);
 
-    $('#Parametros').click(function () {
-       location.href=gearsPage.baseUrl('parametros/admin');
+    $('#agregarParametro').click(function () {
+        $('#Codigo').val('');
+        $('#Nombre').val('');
+        $('#formOpciones').show();
     });
 
-    $('#Agregar').click(function () {
-       location.href=gearsPage.baseUrl('parametros/equipos');
+    $('#btnCancel').click(function () {
+        $('#Codigo').val('');
+        $('#Nombre').val('');
+        $('#formOpciones').hide();
     });
-    
-    
-    
-    $('#Actualizar').click(function () {
-        var anSelected = gearsPage.fnGetSelected(oTable);
-        if (anSelected.length > 0) {
-            var val = $(anSelected)[0].cells[0].childNodes[0].attributes[0].value;//codigo
-            if (val > 0) {
-                window.location.href = gearsPage.baseUrl('parametros/equipos/' + val);
-            }
+
+    $(document).on('click', '.clsUpda', function () {
+        var idData = parseInt($(this).attr('data'));
+        if (idData > 0) {
+            $.ajax({
+                cache: false, type: "POST",
+                url: gearsPage.urlServer('Parametros'),
+                dataType:'json',
+                data: 'id=' + idData + '&accion=dataParam',
+                success: function (datos) {
+                    console.log(datos);
+                    $('#Codigo').val(datos.id);
+                    $('#Nombre').val(datos.nombre);
+                    $('#formOpciones').show();
+                }
+            });
         }
     });
 
-    $('#Info').click( function(){
-            
-        var anSelected = gearsPage.fnGetSelected( oTable );
-        var val=$(anSelected).attr('data');
-        if(val>0&& val!==undefined){
-        $.ajax({
-            cache:false,type: "POST",
-            url: UrlServer()+'MagnitudesEquipos.php',
-            data:'idParametro='+val+'&accion=parametrosTipo',
-            beforeSend: function () {
-               $('#ActionLoad').show();                     
-            },success: function(resp){
-                $('#infoModal1').html(resp);
-                $("#infoModal1" ).dialog({
-                   title: 'Parametros Equipo',
-                   resizable: false, //permite cambiar el tamaño
-                   height:375, // altura
-                   width :500,
-                   modal: true, //capa principal, fondo opaco
-                   buttons: {
-                     Cerrar: function() {
-                       $( this ).dialog( "destroy" );
-                     }
-                   }
-                 });
-           },complete: function () {
-               $('#ActionLoad').hide();                       
+
+    $('#regParametros').validate({
+
+        submitHandler: function () {
+            var str = $('#regParametros').serialize();
+            var cod = $("input[name=Codigo]:hidden").val();
+            if (cod > 0) {
+                $.ajax({
+                    cache: false, type: "POST",
+                    url: gearsPage.urlServer('Parametros'),
+                    data: str + "&accion=Actualizar",
+                    beforeSend: function () {
+                        $('#AccionLoad').show();
+                    }, success: function (datos) {
+                        var item = JSON.parse(datos);
+                        if (item.respuesta === false) {
+                            var text = 'Ocurrio un Error, No Se Completo ta Tarea. No se Altero Ningun Registro..!';
+                            var class_name = 'gritter-error';
+                        } else {
+                            var text = 'Se actualizo el nombre del parametro correctamente!';
+                            var class_name = 'gritter-success';
+                        }
+                        $('#Codigo').val('');
+                        $('#Nombre').val('');
+                        $('#formOpciones').hide();
+                        $.gritter.add({title: 'Confirmacion!', text: text, class_name: class_name, sticky: false, time: 2500});
+                        
+                    },complete: function () {
+                        $('#AccionLoad').hide();
+                    },
+                    error: function () {
+                        alert('ERROR GENERAL DEL SISTEMA, INTENTE MAS TARDE');
+                    }
+                });
+            } else {
+                $.ajax({
+                    cache: false, type: "POST",
+                    url: gearsPage.urlServer('Parametros'),
+                    data: str + "&accion=Guardar",
+                    beforeSend: function () {
+                        $('#AccionLoad').show();
+                    }, success: function (datos) {
+                        var item = JSON.parse(datos);
+                        if (item.respuesta === true) {
+                            var text = 'Se Registro parametro correctamente..!';
+                            var class_name = 'gritter-success';
+                            $('#Codigo').val('');
+                            $('#Nombre').val('');
+                            $('#formOpciones').hide();
+                        } else if (item.respuesta === false && item.code === 'creada') {
+                            var text = 'No Se Completo ta Tarea. Este Nombre ya se encuetra Registrado..!';
+                            var class_name = 'gritter-warning';
+                        } else {
+                            var text = 'Ocurrio un Error, No Se Completo ta Tarea. No se Altero Ningun Registro..!';
+                            var class_name = 'gritter-error';
+                        }
+                        $.gritter.add({title: 'Confirmacion!', text: text, class_name: class_name, sticky: false, time: 2500});
+                    },complete: function () {
+                        $('#AccionLoad').hide();
+                    },
+                    error: function () {
+                        alert('ERROR GENERAL DEL SISTEMA, INTENTE MAS TARDE');
+                    }
+                });
             }
-        });
-      }
-     });
-    
-    
+        },
+        errorPlacement: function (error, element) {
+            error.appendTo(element.prev("span").append());
+        }
+    });
 });

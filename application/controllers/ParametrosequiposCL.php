@@ -9,12 +9,14 @@
 
 namespace Application\Controllers;
 
+use Application\CustomFunctions;
+
 /**
  * Description of ParametrosequiposCL
  *
  * @author Usuario
  */
-class ParametrosequiposCL {
+class ParametrosequiposCL extends CustomFunctions {
 
     //put your code here
 
@@ -30,6 +32,15 @@ class ParametrosequiposCL {
     }
 
     public function ConsultaParametrosEquipo($param) {
+        try {
+            $accion = $this->serviceData->ParametrosEquipo($param);
+            return $accion;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function ConsultaParametrosEquipos($param) {
         try {
             $accion = $this->serviceData->ParametrosEquipos($param);
             return $accion;
@@ -49,21 +60,25 @@ class ParametrosequiposCL {
 
     public function ActualziarParametrosEquipo($tipo, $params) {
         $regParam = 0;
-        $parametros = $this->serviceData->ParametrosEquipos($tipo,true);
-        $arrayP=(explode(',', trim($parametros->arrayparams, '{}')));
+        $parametros = $this->serviceData->ParametrosEquipo($tipo, true);
+        $arrayCargar = $params;
+        $arrayCargados = (explode(',', trim($parametros->arrayparams, '{}')));
 
         foreach ($params as $value) {
-            if(!in_array($value, $arrayP)){
-                echo 'quere agregar'.$value.' -';
-                $cargado=$this->serviceData->ParametroEnEquipo($value);
-                $carga = !empty($cargado)?$this->serviceData->RetirarParametro($tipo, $value):$this->serviceData->AgregarParametro($tipo, $value);
-                $carga ? $regParam = $regParam + 1 : 0;
-            }else{
-                unset($arrayP[$value]);
-                $arrayP = array_values(array_filter($arrayP));
+            if (in_array($value, $arrayCargados)) {
+                $arrayCargados = parent::removeElementArray($value, $arrayCargados);
+                $arrayCargar = parent::removeElementArray($value, $arrayCargar);
             }
         }
-        var_dump($arrayP);
+
+        foreach ($arrayCargar as $value) {
+            $carga = $this->serviceData->AgregarParametro($tipo, $value);
+            $carga ? $regParam = $regParam + 1 : 0;
+        }
+
+        foreach ($arrayCargados as $value) {
+            $this->serviceData->RetirarParametro($tipo, $value);
+        }
         return $regParam;
     }
 

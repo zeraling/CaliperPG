@@ -5,40 +5,15 @@
  *  Archivo Creado por Zeraling
  */
 
-var oTable;
+
 $(document).ready(function () {
+// Validar Formulario
 
-    oTable = $('#listaParametros').dataTable({
-        "sScrollX": "100%",
-        "sScrollXInner": "110%",
-        "bScrollCollapse": true,
-        "oLanguage": gearsPage.idiomaTablas()
+    $('#btnVolver').click(function () {
+        location.href = gearsPage.baseUrl('parametros');
     });
 
-    $('#agregarParametro').click(function () {
-        $('#Codigo').val('');
-        $('#Nombre').val('');
-        $('#formOpciones').show();
-    });
-
-    $(document).on('click', '.clsUpda', function () {
-        var idData = parseInt($(this).attr('data'));
-        if (idData > 0) {
-            $.ajax({
-                cache: false, type: "POST",
-                url: gearsPage.urlServer('Parametros'),
-                dataType:'json',
-                data: 'id=' + idData + '&accion=dataParam',
-                success: function (datos) {
-                    console.log(datos);
-                    $('#Codigo').val(datos.id);
-                    $('#Nombre').val(datos.nombre);
-                    $('#formOpciones').show();
-                }
-            });
-        }
-    });
-
+    $('#parametros').select2({language: 'es', placeholder: 'Seleccione parametros'});
 
     $('#regParametros').validate({
 
@@ -48,7 +23,7 @@ $(document).ready(function () {
             if (cod > 0) {
                 $.ajax({
                     cache: false, type: "POST",
-                    url: gearsPage.urlServer('Parametros'),
+                    url: gearsPage.urlServer('Tiposeequipos'),
                     data: str + "&accion=Actualizar",
                     beforeSend: function () {
                         $('#AccionLoad').show();
@@ -58,16 +33,12 @@ $(document).ready(function () {
                             var text = 'Ocurrio un Error, No Se Completo ta Tarea. No se Altero Ningun Registro..!';
                             var class_name = 'gritter-error';
                         } else {
-                            var text = 'Se actualizo el nombre del parametro correctamente!';
+                            var text = 'Se actualizo la informacion del tipo de equipo correctamente!';
                             var class_name = 'gritter-success';
                         }
-                        $('#Codigo').val('');
-                        $('#Nombre').val('');
-                        $('#formOpciones').hide();
                         $.gritter.add({title: 'Confirmacion!', text: text, class_name: class_name, sticky: false, time: 2500});
-                        
                     },complete: function () {
-                        $('#AccionLoad').hide();
+                         $('#AccionLoad').hide();
                     },
                     error: function () {
                         alert('ERROR GENERAL DEL SISTEMA, INTENTE MAS TARDE');
@@ -76,26 +47,25 @@ $(document).ready(function () {
             } else {
                 $.ajax({
                     cache: false, type: "POST",
-                    url: gearsPage.urlServer('Parametros'),
+                    url: gearsPage.urlServer('Tiposeequipos'),
                     data: str + "&accion=Guardar",
                     beforeSend: function () {
                         $('#AccionLoad').show();
                     }, success: function (datos) {
                         var item = JSON.parse(datos);
                         if (item.respuesta === true) {
-                            var text = 'Se Registro parametro correctamente..!';
+                            var text = 'Se Registro El Usuario con la Cedula ' + item.code + ' Correctamente..!';
                             var class_name = 'gritter-success';
-                            
-                            $('#Nombre').val('');
-                            $('#formOpciones').hide();
-                        } else if (item.respuesta === false && item.code === 'creada') {
-                            var text = 'No Se Completo ta Tarea. Este Nombre ya se encuetra Registrado..!';
+                            $("input[name=Codigo]:hidden").val(item.code);
+                        } else if (item.respuesta === false && item.code === 'creado') {
+                            var text = 'No Se Completo ta Tarea. La este tipo ya se encuentra creado..!';
                             var class_name = 'gritter-warning';
                         } else {
                             var text = 'Ocurrio un Error, No Se Completo ta Tarea. No se Altero Ningun Registro..!';
                             var class_name = 'gritter-error';
                         }
                         $.gritter.add({title: 'Confirmacion!', text: text, class_name: class_name, sticky: false, time: 2500});
+                       
                     },complete: function () {
                         $('#AccionLoad').hide();
                     },
@@ -110,3 +80,5 @@ $(document).ready(function () {
         }
     });
 });
+
+

@@ -23,30 +23,30 @@ class ParametrosPage extends RenderPages {
         $tiposContrl = new \Application\Controllers\TiposequiposCL();
         $data['listTipos'] = $tiposContrl->ListaTiposEquipos();
 
-        return $this->render('parametros/lista.twig', $data);
+        return $this->render('parametros/equipos.twig', $data);
     }
 
-    public function getAdmin() {
+    public function getLista() {
         $parametrosContrl = new \Application\Controllers\ParametrosCL();
         $data['listParametros'] = $parametrosContrl->ListaParametros();
 
-        return $this->render('parametros/admin.twig', $data);
+        return $this->render('parametros/lista.twig', $data);
     }
 
-    public function getEquipos($code = null) {
+    public function getAdmin($code = null) {
         if ($code != null && $code > 0) {
             $tiposControl = new \Application\Controllers\TiposequiposCL();
             $tipoEq = $tiposControl->ConsultaUnTipo($code);
             $data['tipoEq'] = $tipoEq[0];
 
             $paramControl = new \Application\Controllers\ParametrosequiposCL();
-            $data['listParametros'] = $paramControl->ConsultaParametrosEquipo($code);
+            $data['listParametros'] = $paramControl->ConsultaParametrosEquipos($code);
             
         } else {
             $parametrosContrl = new \Application\Controllers\ParametrosCL();
             $data['listParametros'] = $parametrosContrl->ListaParametros();
         }
-        return $this->render('parametros/form.twig', $data);
+        return $this->render('parametros/admin.twig', $data);
     }
 
 }
