@@ -1,3 +1,6 @@
+# ignore nbproject
+nbproject/*
+
 # ignore all logs
 *.log
 
