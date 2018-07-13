@@ -9,8 +9,8 @@
 
 namespace Application\Views;
 
-use \Application\RenderPages;
-
+use Application\RenderPages;
+use Application\Controllers\EquiposCL;
 /**
  * Description of Equipospage
  *
@@ -34,6 +34,23 @@ class EquiposPage extends RenderPages{
         $data['listMarcas'] = $unidadesContrl->ListaMarcas();
 
         return $this->render('equipos/marcas.twig', $data);
+    }
+    
+    public function getForm($code = null) {
+        $tiposEquipos=new \Application\Controllers\TiposequiposCL();
+        $data['listaTipos']=$tiposEquipos->ListaTiposEquipos();
+
+        $marcasEquipos=new \Application\Controllers\MarcasCL();
+        $data['listaMarcas']=$marcasEquipos->ListaMarcas();
+
+        if ($code != null && $code > 0) {
+            $customController = new \Application\Controllers\EquiposCL();
+            $info = $customController->ConsultaUnEquipo($code);
+            if(!empty($info)){
+                $data['equipo'] = $info[0];
+            }
+        }
+        return $this->render('equipos/form.twig', $data);
     }
     
     

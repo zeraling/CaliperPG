@@ -11,16 +11,16 @@ namespace Application\Controllers;
 use Application\CustomFunctions;
 
 /**
- * Description of ProductosCL
+ * Description of EquipospatronesCL
  *
  * @author Usuario
  */
-class EquiposCL extends CustomFunctions {
+class EquipospatronesCL {
 
     private $serviceData;
 
     function __construct() {
-        $EquiposService = new \Application\Access\EquiposDA();
+        $EquiposService = new \Application\Access\EquipospatronesDA();
         $this->serviceData = $EquiposService;
     }
 
@@ -28,21 +28,16 @@ class EquiposCL extends CustomFunctions {
         $this->serviceData;
     }
 
-    public function ConsultaEquipos($data) {
-        $condiciones = " ";
+    public function ListadoPatrones() {
         try {
-            $condiciones .= $data->tipo > 0 ? " AND equipos.id_tipo=" . $data->tipo : "";
-            $condiciones .= $data->marca > 0 ? " AND equipos.id_marca=" . $data->marca : "";
-            $condiciones .= $data->modelo !='' ? " AND equipos.modelo='" . $data->modelo."'" : "";
-
-            $Consulta = $this->serviceData->Consulta($condiciones);
+            $Consulta = $this->serviceData->Listado();
             return $Consulta;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-    public function VerificarUnEquipo(\Application\Data\EquiposVO $param) {
+    public function VerificarUnEquipo($param) {
         try {
             $accion = $this->serviceData->EquipoEspecifico($param);
             return $accion;
@@ -51,7 +46,7 @@ class EquiposCL extends CustomFunctions {
         }
     }
 
-    public function RegistrarEquipo(\Application\Data\EquiposVO $equipo) {
+    public function RegistrarEquipo(\Application\Data\EquipospatronesVO $equipo) {
         try {
             $Guardar = $this->serviceData->Registrar($equipo);
             return $Guardar;

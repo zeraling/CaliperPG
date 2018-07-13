@@ -10,7 +10,7 @@
 require_once '../../vendor/autoload.php';
 /* Inport de Clases */
 
-use Application\Controllers\EquiposCL;
+use Application\Controllers\EquipospatronesCL;
 
 extract($_POST);
 
@@ -19,32 +19,16 @@ if (empty($accion)) {
 } else {
 
     switch ($accion) {
-        case 'Consultar';
-            $dataConsulta = json_decode($data);
-            $datos = Array();
-            $equiposControl = new EquiposCL();
-            $ListaProductos = $equiposControl->ConsultaEquipos($dataConsulta);
-            if (!empty($ListaProductos)) {
-                foreach ($ListaProductos as $value) {
-                    $datos[] = array(
-                        'codigo' => '<span data=' . $value->codigo . '>' . $value->codigo . '</span>',
-                        'equipo' => $value->tipo,
-                        'marca' => $value->marca,
-                        'modelo' => $value->modelo
-                    );
-                }
-            }
-            echo json_encode($datos);
-            break;
         case 'Guardar':
-            $equiposControl = new EquiposCL();
-            $miEquipo = new \Application\Data\EquiposVO();
+            $equiposControl = new EquipospatronesCL();
+            $miEquipo = new \Application\Data\EquipospatronesVO();
 
+            $miEquipo->setNombre($Nombre);
             $miEquipo->setId_marca($CodMarca);
-            $miEquipo->setId_tipo($IdTipoEquipo);
             $miEquipo->setModelo($Modelo);
-
-            $disponible = $equiposControl->VerificarUnEquipo($miEquipo);
+            $miEquipo->setSerie($noSerie);
+            
+            $disponible = $equiposControl->VerificarUnEquipo($noSerie);
             if (!empty($disponible)) {
                 echo json_encode(array('respuesta' => false, 'code' => 'creado'));
             } else {
@@ -62,6 +46,6 @@ if (empty($accion)) {
             break;
         default:
             echo "Accion no Programada";
-        break;
+            break;
     }
 }

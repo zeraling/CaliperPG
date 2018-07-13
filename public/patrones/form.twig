@@ -7,7 +7,7 @@
     <div class="page-content">
 
         <div class="col-xs-12 col-sm-6 widget-container-col ">
-            <form id="registrarEquipo" name="registrarEquipo" method="POST">
+            <form id="crearequipo" method="POST" name="crearequipo" autocomplete="off">
                 <div class="widget-box widget-color-blue">
                     <div class="widget-header">
                         <h5 class="widget-title">Opciones Equipos</h5>
@@ -16,25 +16,17 @@
                         </div>
                     </div>      
                     <div class="widget-body">
+                        {% set codigo = (patron)?(['value="', patron.codigo,'"']|join) :'value=""'  %}
+                        <input type="hidden" name="Codigo" id="Codigo" {{codigo|raw}}/>
                         <div class="widget-main">
-                            {% set codigo = (equipo)?(['value="', equipo.codigo,'"']|join) :'value=""'  %}
                             <div class="form-horizontal"> 
                                 <div class="form-group">
                                     <div class="col-sm-3 control-label">
-                                        <label class="label label-primary">Tipo:</label>
+                                        <span class="label label-primary">Equipo:</span>
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-7">
                                         <span></span>
-                                        <select id="IdTipoEquipo" name="IdTipoEquipo" class="{required:true} form-control">
-                                            {% if listaTipos %}
-                                                <option value=""> - Selecione Uno - </option>
-                                                {%for tipos in listaTipos%}
-                                                    <option value="{{tipos.id}}" >{{tipos.nombre}}</option>
-                                                {%endfor%}
-                                            {% else %}
-                                                <option value=""></option>
-                                            {% endif %}
-                                        </select> 
+                                        <textarea id="Nombre" name="Nombre" placeholder="Nombre Patron" onkeyup="this.value=this.value.toUpperCase()" class="{required:true,minlength:3} form-control" rows="2" style="resize: none"  {{patron?'readonly':''}}>{{patron?patron.nombre:''}}</textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -43,11 +35,12 @@
                                     </div>
                                     <div id="selectMarca" class="col-sm-5">
                                         <span></span>
-                                        <select id="CodMarca" name="CodMarca" class="{required:true} form-control">
+                                        <select id="CodMarca" name="CodMarca" class="{required:true} form-control" {{patron?'disabled':''}}>
                                             {% if listaMarcas %}
                                                 <option value=""> - Selecione Uno - </option>
                                                 {%for marcas in listaMarcas%}
-                                                    <option value="{{marcas.codigo}}" >{{marcas.nombre}}</option>
+                                                    {% set marca = (patron and patron.id_marca==marcas.codigo)?'selected="selected"':'' %}
+                                                    <option value="{{marcas.codigo}}" {{marca}} >{{marcas.nombre}}</option>
                                                 {%endfor%}
                                             {% else %}
                                                 <option value=""></option>
@@ -61,7 +54,18 @@
                                     </div>
                                     <div class="col-sm-5">
                                         <span></span>
-                                        <input type="text" id="Modelo" onkeyup="this.value = this.value.toUpperCase()" name="Modelo" placeholder="Modelo" class="{required:true,minlength:1,messages:{required:'* Favor digite un Modelo'}} form-control" />
+                                        {% set modelo = (patron)?(['value="', patron.modelo,'" readonly']|join) :'value=""'  %}
+                                        <input type="text" id="Modelo" onkeyup="this.value = this.value.toUpperCase()" name="Modelo" placeholder="Modelo" class="{required:true,minlength:1,messages:{required:'* Favor digite un Modelo'}} form-control" {{modelo|raw}} />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-3 control-label">
+                                        <span class="label label-primary">Serie:</span>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <span></span>
+                                        {% set serie = (patron)?(['value="', patron.serie,'" readonly']|join) :'value=""'  %}
+                                        <input type="text"  id="noSerie" name="noSerie"  placeholder="noSerie"  class="{required:true,messages:{required:'* Favor digite La la Serie del Equipo'}} form-control" {{serie|raw}}/> 
                                     </div>
                                 </div>
                             </div>
@@ -89,5 +93,5 @@
     <script type="text/javascript" src="{{ 'plugins/jquery-validate/lib/jquery.metadata.js'|baseUrl}}"></script>
     <script type="text/javascript" src="{{ 'plugins/jquery-validate/localization/messages_es.js'|baseUrl}}"></script> 
     <!-- Custom -->
-    <script type="text/javascript" src="{{'application/scripts/equipos/form.js'|baseUrl}}"></script>
+    <script type="text/javascript" src="{{'application/scripts/patrones/form.js'|baseUrl}}"></script>
 {% endblock %}

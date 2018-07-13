@@ -13,20 +13,21 @@ namespace Application\Data;
  *
  * @author Usuario
  */
-class EquiposVO {
+class EquipospatronesVO {
 
     //put your code here   
     private $codigo;
-    private $id_tipo;
+    private $nombre;
     private $id_marca;
     private $modelo;
+    private $serie;
 
     function getCodigo() {
         return $this->codigo;
     }
 
-    function getId_tipo() {
-        return $this->id_tipo;
+    function getNombre() {
+        return $this->nombre;
     }
 
     function getId_marca() {
@@ -37,12 +38,16 @@ class EquiposVO {
         return $this->modelo;
     }
 
+    function getSerie() {
+        return $this->serie;
+    }
+
     function setCodigo($codigo) {
         $this->codigo = $codigo;
     }
 
-    function setId_tipo($id_tipo) {
-        $this->id_tipo = $id_tipo;
+    function setNombre($nombre) {
+        $this->nombre = $nombre;
     }
 
     function setId_marca($id_marca) {
@@ -51,6 +56,10 @@ class EquiposVO {
 
     function setModelo($modelo) {
         $this->modelo = $modelo;
+    }
+
+    function setSerie($serie) {
+        $this->serie = $serie;
     }
 
 }

@@ -7,9 +7,6 @@
 var oTable;
 $(document).ready(function () {
 
-    $("#IdTipoEquipo").select2({language: 'es', placeholder: 'Selecione un equipo'});
-    $("#CodMarca").select2({language: 'es', placeholder: 'Selecione una marca'});
-
     oTable = $('#listaEquipos').dataTable({
         "sScrollX": "100%",
         "sScrollXInner": "110%",
@@ -19,46 +16,8 @@ $(document).ready(function () {
 
     gearsPage.seleccionTablas('listaEquipos', oTable);
 
-    $('#Consulta').click(function () {
-
-        oTable.fnClearTable(0);
-        oTable.fnDraw();
-
-        var data = {
-            tipo: parseInt($('#IdTipoEquipo').val()),
-            marca: parseInt($('#CodMarca').val()),
-            modelo: $('#Modelo').val()
-        };
-
-        if (data.tipo > 0 || (data.marca > 0 || data.modelo !== '')) {
-            $.ajax({
-                cache: false, type: "POST",
-                url: gearsPage.urlServer('Equipos'),
-                data: 'data=' + JSON.stringify(data) + '&accion=Consultar',
-                beforeSend: function () {
-                    $('#AccionLoad').show();
-                }, success: function (datos) {
-                    var accion = JSON.parse(datos);
-                    if (accion.length) {
-                        accion.forEach(function (item) {
-                            oTable.fnAddData([item.codigo,item.equipo, item.marca, item.modelo]);
-                        })
-                    }
-                    oTable.fnAdjustColumnSizing();
-                }, complete: function () {
-                    $('#AccionLoad').hide();
-                }, error: function (err) {
-                    console.log(err);
-                    alert('ERROR GENERAL DEL SISTEMA, INTENTE MAS TARDE');
-                }
-            });
-        }
-    });
-
-
-
     $('#Nuevo').click(function () {
-        window.location.href = gearsPage.baseUrl('equipos/form')
+        window.location.href = gearsPage.baseUrl('patrones/form')
     });
 
     $('#Editar').click(function () {
@@ -66,7 +25,17 @@ $(document).ready(function () {
         if (anSelected.length > 0) {
             var val = $(anSelected)[0].cells[0].childNodes[0].attributes[0].value;//codigo
             if (val > 0) {
-                window.location.href = gearsPage.baseUrl('equipos/form/' + val);
+                window.location.href = gearsPage.baseUrl('patrones/form/' + val);
+            }
+        }
+    });
+    
+    $('#Parametros').click(function () {
+        var anSelected = gearsPage.fnGetSelected(oTable);
+        if (anSelected.length > 0) {
+            var val = $(anSelected)[0].cells[0].childNodes[0].attributes[0].value;//codigo
+            if (val > 0) {
+                window.location.href = gearsPage.baseUrl('patrones/param/' + val);
             }
         }
     });
@@ -102,8 +71,5 @@ $(document).ready(function () {
             }
         }
     });
-
-    $('#opMarcas').click(function () {
-        window.location.href = gearsPage.baseUrl('equipos/marcas')
-    });
+    
 });

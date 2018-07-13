@@ -14,23 +14,19 @@ use Application\Connections\CaliperDB;
 use Application\AppLog;
 
 /**
- * Description of ProductosDA
+ * Description of EquipospatronesDA
  *
  * @author Usuario
  */
-class EquiposDA {
+class EquipospatronesDA {
 
-    public function Consulta($param) {
+    public function Listado() {
         $consulta = "select 
-        equipos.codigo,
-        equipos.id_tipo,
-        tiposequipos.nombre as tipo,
-        marcas.nombre as marca,
-        equipos.modelo
-        from equipos,tiposequipos,marcas
-        where equipos.id_marca=marcas.codigo
-        and equipos.id_tipo=tiposequipos.id
-        " . $param;
+        equipospatrones.codigo,
+        equipospatrones.nombre ||' '|| marcas.nombre||' '|| equipospatrones.modelo as descripcion,
+        equipospatrones.serie
+        from equipospatrones,marcas
+        where equipospatrones.id_marca=marcas.codigo";
         //instancia y conexion a base de datos
         $dataBase = new CaliperDB();
         try {
@@ -48,9 +44,8 @@ class EquiposDA {
         }
     }
 
-    public function EquipoEspecifico(\Application\Data\EquiposVO $param) {
-        $consulta = "select equipos.codigo from equipos "
-                . "where equipos.id_marca=:marca and equipos.id_tipo=:tipo and equipos.modelo=:modelo";
+    public function EquipoEspecifico($param) {
+        $consulta = "select equipospatrones.codigo from equipospatrones where equipospatrones.serie=:serie";
 
         //instancia y conexion a base de datos
         $dataBase = new CaliperDB();
@@ -58,11 +53,7 @@ class EquiposDA {
             // preparar el DML a ejecutar
             $query = $dataBase->prepare($consulta);
             // ejecutar la consulta
-            $query->execute([
-                ':marca' => $param->getId_marca(),
-                ':modelo' => $param->getModelo(),
-                ':tipo' => $param->getId_tipo()
-            ]);
+            $query->execute([':serie' =>$param]);
             // procesamos el resultado de la consulta
             $resultados = $query->fetchAll(PDO::FETCH_OBJ);
             return $resultados;
@@ -73,17 +64,18 @@ class EquiposDA {
         }
     }
 
-    public function Registrar(\Application\Data\EquiposVO $producto) {
-        $consulta = "insert into equipos(id_tipo,id_marca,modelo)values(:tipo,:marca,:modelo)";
+    public function Registrar(\Application\Data\EquipospatronesVO $producto) {
+        $consulta = "insert into equipospatrones(nombre,id_marca,modelo,serie)values(:nombre,:marca,:modelo,:serie)";
         //instancia y conexion a base de datos
         $dataBase = new CaliperDB();
         try {
             // preparar el DML a ejecutar
             $query = $dataBase->prepare($consulta);
 
-            $query->bindValue(':tipo', $producto->getId_tipo(), PDO::PARAM_INT);
+            $query->bindValue(':nombre', $producto->getNombre(), PDO::PARAM_STR);
             $query->bindValue(':marca', $producto->getId_marca(), PDO::PARAM_INT);
             $query->bindValue(':modelo', $producto->getModelo(), PDO::PARAM_STR);
+            $query->bindValue(':serie', $producto->getModelo(), PDO::PARAM_STR);
 
             // ejecutar la consulta
             $query->execute();
@@ -98,14 +90,14 @@ class EquiposDA {
     }
 
     public function UnEquipo($codigo) {
-        $consulta = "select * from equipos where equipos.codigo=:codeigo";
+        $consulta = "select * from equipospatrones where equipospatrones.codigo=:codeigo";
         //instancia y conexion a base de datos
         $dataBase = new CaliperDB();
         try {
             // preparar el DML a ejecutar
             $query = $dataBase->prepare($consulta);
             // ejecutar la consulta
-            $query->execute([':codigo' => $codigo]);
+            $query->execute([':codeigo' => $codigo]);
             // procesamos el resultado de la consulta
             $resultados = $query->fetchAll(PDO::FETCH_OBJ);
             return $resultados;
