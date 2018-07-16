@@ -46,7 +46,7 @@
         "icon": "menu-icon fa fa-clone",
         "class": "EquiposPatronesPage",
         "link": "patrones",
-        "vistas": ["patrones", "patrones/form"],
+        "vistas": ["patrones", "patrones/form", "patrones/calibracion", "patrones/params"],
         "opciones": []
     },
     {

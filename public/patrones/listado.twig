@@ -10,7 +10,6 @@
             <div class=" col-xs-12 col-sm-10">
                 <div class="info-box">
                     <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
-
                     <div class="info-box-content">
                         <span class="info-box-text"><b>Parametros</b></span>
                         <div class="progress">
@@ -47,8 +46,8 @@
                                             Mas <span class="ace-icon fa fa-caret-down icon-on-right"></span>
                                         </button>
                                         <ul class="dropdown-menu dropdown-success">  
-                                            <li><a id="Nuevo" ><i class="fa fa-plus"></i> Calibracion </a></li>
-                                            <li><a id="Editar"><i class="fa fa-edit"></i> Parametros </a></li>  
+                                            <li><a id="opCalibracion" ><i class="fa fa-calendar-check-o"></i> Calibracion </a></li>
+                                            <li><a id="opParams"><i class="fa fa-rocket"></i> Parametros </a></li>  
                                         </ul>
                                     </div>
                                 </div>
@@ -86,41 +85,6 @@
                     </div>
                 </div>
             </div>
-            <div id="formOpciones" class="col-sm-5 widget-container-col hide">
-                <form  id="regParametros" method="POST" name="regParametros">
-                    <div class="widget-box widget-color-dark">
-                        <div class="widget-header">
-                            <h5 class="widget-title">Opciones</h5>
-                        </div>
-                        <div class="widget-body">
-                            <div class="widget-main">
-                                <input type="hidden" name="Codigo" id="Codigo" {{codigo|raw}}/>
-                                <div class="form-horizontal">
-                                    <div class="form-group">
-                                        <div class="col-sm-4 control-label">
-                                            <label class="label label-important">Nombres:</label>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <span></span>
-                                            <input type="text" id="Nombre" name="Nombre" placeholder="Nombre" onkeypress="return gearsPage.soloLetras(event)" onkeyup="this.value=this.value.toUpperCase()" class="{required:true,minlength:3,messages:{required:'* Favor digite un Nombre'}} form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="widget-toolbox padding-8 clearfix">
-                                <div class="row">
-                                    <div class="col-sm-9 col-sm-offset-3">
-                                        <button type="submit" class="btn btn-success">Guardar</button>
-                                        <button id="btnCancel" type="button" class="btn btn-default">Cancelar</button> 
-                                    </div>
-                                </div>
-                                <img id="AccionLoad" class="hide" src="{{'template/images/loaders/bar120.gif'|baseUrl}}">
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
         </div>
     </div><!-- /.page-content -->
 {% endblock %}

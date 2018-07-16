@@ -30,12 +30,22 @@ $(document).ready(function () {
         }
     });
     
-    $('#Parametros').click(function () {
+    $('#opCalibracion').click(function () {
         var anSelected = gearsPage.fnGetSelected(oTable);
         if (anSelected.length > 0) {
             var val = $(anSelected)[0].cells[0].childNodes[0].attributes[0].value;//codigo
             if (val > 0) {
-                window.location.href = gearsPage.baseUrl('patrones/param/' + val);
+                window.location.href = gearsPage.baseUrl('patrones/calibracion/' + val);
+            }
+        }
+    });
+    
+    $('#opParams').click(function () {
+        var anSelected = gearsPage.fnGetSelected(oTable);
+        if (anSelected.length > 0) {
+            var val = $(anSelected)[0].cells[0].childNodes[0].attributes[0].value;//codigo
+            if (val > 0) {
+                window.location.href = gearsPage.baseUrl('patrones/params/' + val);
             }
         }
     });
