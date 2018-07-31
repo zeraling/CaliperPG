@@ -24,7 +24,6 @@ class ClientesVO {
     private $direccion;
     private $telefono;
     private $id_ciudad;
-    private $id_empresa;
 
     function getCodigo() {
         return $this->codigo;
@@ -50,10 +49,6 @@ class ClientesVO {
         return $this->id_ciudad;
     }
 
-    function getId_empresa() {
-        return $this->id_empresa;
-    }
-
     function setCodigo($codigo) {
         $this->codigo = $codigo;
     }
@@ -76,10 +71,6 @@ class ClientesVO {
 
     function setId_ciudad($id_ciudad) {
         $this->id_ciudad = $id_ciudad;
-    }
-
-    function setId_empresa($id_empresa) {
-        $this->id_empresa = $id_empresa;
     }
 
 }

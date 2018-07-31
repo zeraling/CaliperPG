@@ -21,17 +21,14 @@ use Application\AppLog;
  */
 class ClientesDA {
 
-    public function ClientesEmpresas($param = '1') {
+    public function Lista() {
         $consulta = "SELECT
         clientes.codigo,
         clientes.nit,
         clientes.nombre,
-        ciudades.nombre as ciudad,
-        empresas.nombre as empresa
+        ciudades.nombre as ciudad
         FROM ciudades,clientes 
-        LEFT JOIN empresas ON empresas.codigo = clientes.id_empresa
-        WHERE clientes.id_ciudad=ciudades.codigo
-        AND empresas.codigo IN (" . $param . ")";
+        WHERE clientes.id_ciudad=ciudades.codigo";
         //instancia y conexion a base de datos
         $dataBase = new CaliperDB();
         try {
@@ -47,18 +44,17 @@ class ClientesDA {
         }
     }
 
-    public function ConsultarNit($nit, $empresa) {
+    public function ConsultarNit($nit) {
         $consulta = "SELECT
         clientes.codigo
         FROM clientes 
-        WHERE clientes.nit=:nit
-        AND clientes.id_empresa=:empresa";
+        WHERE clientes.nit=:nit";
         //instancia y conexion a base de datos
         $dataBase = new CaliperDB();
         try {
             // preparar el DML a ejecutar
             $query = $dataBase->prepare($consulta);
-            $query->execute([':nit' => $nit, ':empresa' => $empresa]);
+            $query->execute([':nit' => $nit]);
             //establecer el tipo de retorno de los datos
             $resultados = $query->fetchAll(PDO::FETCH_OBJ);
             return $resultados;
@@ -70,8 +66,8 @@ class ClientesDA {
     }
 
     public function Guardar(\Application\Data\ClientesVO $cliente) {
-        $consulta = "INSERT INTO clientes (nit,nombre,direccion,telefono,id_ciudad,id_empresa)"
-                . "VALUES(:nit,:nombre,:direccion,:telefono,:ciudad,:empresa)";
+        $consulta = "INSERT INTO clientes (nit,nombre,direccion,telefono,id_ciudad)"
+                . "VALUES(:nit,:nombre,:direccion,:telefono,:ciudad)";
 
         $dataBase = new CaliperDB();
         try {
@@ -82,7 +78,6 @@ class ClientesDA {
             $query->bindValue(':direccion', $cliente->getDireccion(), PDO::PARAM_STR);
             $query->bindValue(':telefono', $cliente->getTelefono(), PDO::PARAM_STR);
             $query->bindValue(':ciudad', $cliente->getId_ciudad(), PDO::PARAM_INT);
-            $query->bindValue(':empresa', $cliente->getId_empresa(), PDO::PARAM_INT);
 
             // ejecutar la consulta
             $query->execute();

@@ -1,0 +1,130 @@
+{% extends "pageMaster.twig" %}
+{% block style_plugin %}
+
+{% endblock %}
+
+{# 
+
+{% set codigo = (cliente)?(['value="', cliente.Codigo,'"']|join) :''  %} 
+{% set tipo = (actividad and actividad.IdTipo==tipos.Codigo)?'selected="selected"':'' %}
+
+#}
+
+{% block content %}
+    <div class="page-content">
+
+        <div class="col-sm-6 widget-container-col">
+            <div class="widget-box widget-color-green2">
+                <div class="widget-header">
+                    <h5 class="widget-title smaller">Registro de informes</h5>
+                    <div class="widget-toolbar no-border">
+                        <ul class="nav nav-tabs" id="myTab">
+                            <li class="active"><a href="#">General</a></li>
+                            <li class=""><a href="#">Detalles</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <input type="hidden" id="Codigo" name="Codigo" value="<?php echo!empty($MiInforme) ? $MiInforme[0]->Numero : ''; ?>"/>
+                        <div class="form-horizontal">
+                            <fieldset>
+                                <legend class="text-center">Certificado</legend>
+                                <div class="form-group">
+                                    <div class="col-sm-3 control-label">
+                                        <span class="label label-primary">Empresa:</span>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <select id="IdEmpresa" name="IdEmpresa" class="form-control">
+                                            {%if listEmpresas %}
+                                                <option value=""> - Seleccione una</option>
+                                                {% for empresas in listEmpresas %}
+                                                    <option value="{{empresas.codigo}}">{{empresas.nombre}}</option>
+                                                {%endfor%}
+                                            {%else%}
+                                                <option value="">- No hay datos- </option>
+                                            {%endif%}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-3 control-label">
+                                        <span class="label label-important">Cliente:</span>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <select id="IdCliente" name="IdCliente" class="{required:true} form-control">
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        <span class="label label-important">Numero:</span>
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <input type="number" id="numero" name="numero" onkeypress="return gearsPage.SoloNumeros(event)" placeholder="Numero" class="{required:true} form-control"/>
+                                            <span id="opNumero" class="input-group-btn ">
+                                                <button id="verificarNo" class="btn btn-white btn-success" type="button" ><i class="fa fa-check"></i></button>
+                                            </span>   
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        <span class="label label-important">Firma:</span>
+                                    </label>
+                                    <div class="col-sm-5">
+                                        <span></span>
+                                        <select id="IdPersonal" name="IdPersonal" class="{required:true} form-control" >
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset> 
+                            <fieldset>
+                                <legend class="text-center">Equipo</legend>
+                                <div id="formEquipo" class="form-group">
+                                    <div class="col-sm-3 control-label">
+                                        <span class="label label-primary">Equipo:</span>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            <select id="IdEquipo" name="IdEquipo" class="{required:true} form-control">
+
+                                            </select> 
+                                            <span class="input-group-btn">
+                                                <button id="cargarEquipo" type="button" class="btn btn-sm btn-primary" ><i class="fa fa-plus-circle"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-3 control-label">
+                                        <span class="label label-important">Serie:</span>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <span></span>
+                                        <input type="text"  id="noSerie" name="noSerie"  placeholder="noSerie"  class="{required:true,messages:{required:'* Favor digite La la Serie del Equipo'}} form-control" /> 
+                                    </div>
+                                </div>
+                            </fieldset> 
+                        </div>
+                    </div>
+                    <div class="widget-toolbox padding-8 clearfix">
+                        <img id="AccionLoad" class="hide" src="<?php echo DIR_IMAGES ?>loaders/bar120.gif">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.page-content -->
+{% endblock %}
+{# <img id="AccionLoad" class="hide" src="{{'template/loaders/bar120.gif'|baseUrl}}">  #}
+{% block js_custom %}
+    <!-- Validate --> 
+    <script type="text/javascript" src="{{ 'plugins/jquery-validate/dist/jquery.validate.min.js'|baseUrl}}"></script>
+    <script type="text/javascript" src="{{ 'plugins/jquery-validate/lib/jquery.metadata.js'|baseUrl}}"></script>
+    <script type="text/javascript" src="{{ 'plugins/jquery-validate/localization/messages_es.js'|baseUrl}}"></script> 
+    <!-- Custom -->
+    <script type="text/javascript" src="{{'application/scripts/informes/form.js'|baseUrl}}"></script>
+{% endblock %}

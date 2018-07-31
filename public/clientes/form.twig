@@ -6,7 +6,7 @@
 {% block content %}
     <div class="page-content">
         <div class="row">
-            <form  id="crearcliente" method="POST" name="crearcliente">
+            <form  id="crearcliente" method="POST" name="crearcliente" autocomplete="off">
                 <div id="datos" ></div>
                 <div class="col-xs-12 col-sm-9 widget-container-col">
                     <div class="widget-box widget-color-blue2">
@@ -99,25 +99,6 @@
                                             <span></span>
                                             {% set telefono = (cliente)?(['value="', cliente.telefono ,'"']|join) :''  %}
                                             <input type="text" id="Telefono" name="Telefono" placeholder="Telefono" class="{required:true,minlength:7,messages:{required:'* Favor digite No. Telefono'}} form-control" {{telefono|raw}}/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-sm-3 control-label">
-                                            <label class="label label-important">Empresa:</label>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <span></span>
-                                            <select id="CodEmpresa" name="CodEmpresa" class="{required:true} form-control" {{cliente?'disabled="disabled"':''}}>
-                                                {% if selectEmpresa %}
-                                                    <option value=""> - Selecione una -</option>
-                                                    {%for empresas in selectEmpresa%}
-                                                        {% set empresa = (cliente and cliente.id_empresa==empresas.codigo)?'selected="selected"':'' %}
-                                                        <option value="{{empresas.codigo}}" {{empresa}} >{{empresas.nombre}}</option>
-                                                    {%endfor%}
-                                                {% else %}
-                                                    <option value=""> No hay datos!</option>
-                                                {% endif %}
-                                            </select>
                                         </div>
                                     </div>
                                 </div>

@@ -36,6 +36,15 @@ class EquipospatronesCL {
             echo $exc->getTraceAsString();
         }
     }
+    
+    public function ConsultaDetallesPatron($patron) {
+        try {
+            $Consulta = $this->serviceData->DetallesPatron($patron);
+            return $Consulta;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
 
     public function VerificarUnEquipo($param) {
         try {

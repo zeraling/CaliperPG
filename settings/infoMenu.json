@@ -16,7 +16,7 @@
         "icon": "menu-icon fa fa-file-text-o",
         "class": "InformesPage",
         "link": "informes",
-        "vistas": ["informes", "informes/form"],
+        "vistas": ["informes", "informes/form","informes/datos","informes/pruebas"],
         "opciones": []
     },
     {

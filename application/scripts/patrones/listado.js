@@ -50,15 +50,15 @@ $(document).ready(function () {
         }
     });
 
-    $('#Ver').click(function () {
+    $('#verInfo').click(function () {
         var anSelected = gearsPage.fnGetSelected(oTable);
         if (anSelected.length > 0) {
-            var val = $(anSelected)[0].cells[0].childNodes[0].id;
-            if (val !== '' && val !== undefined) {
+            var val = $(anSelected)[0].cells[0].childNodes[0].attributes[0].value;//codigo
+            if (val > 0) {
                 $.ajax({
                     caceh: false, type: "POST",
-                    url: gearsPage.urlServer('Equipos'),
-                    data: 'serie=' + val + '&accion=info',
+                    url: gearsPage.urlServer('Equipospatrones'),
+                    data: 'codePatron=' + val + '&accion=info',
                     beforeSend: function () {
                         $('#AccionLoad').show();
                     }, success: function (resp) {
@@ -67,6 +67,38 @@ $(document).ready(function () {
                             resizable: false, //permite cambiar el tamaño
                             title: 'Detalles Equipo', //permite cambiar el tamaño
                             width: 400,
+                            modal: true, //capa principal, fondo opaco
+                            buttons: {
+                                Cerrar: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    }, complete: function () {
+                        $('#AccionLoad').hide();
+                    }
+                });
+            }
+        }
+    });
+    
+    $('#verParam').click(function () {
+        var anSelected = gearsPage.fnGetSelected(oTable);
+        if (anSelected.length > 0) {
+            var val = $(anSelected)[0].cells[0].childNodes[0].attributes[0].value;//codigo
+            if (val > 0) {
+                $.ajax({
+                    caceh: false, type: "POST",
+                    url: gearsPage.urlServer('Equipospatrones'),
+                    data: 'codePatron=' + val + '&accion=info',
+                    beforeSend: function () {
+                        $('#AccionLoad').show();
+                    }, success: function (resp) {
+                        $('#infoModal1').html(resp);
+                        $("#infoModal1").dialog({
+                            resizable: false, //permite cambiar el tamaño
+                            title: 'Detalles Equipo', //permite cambiar el tamaño
+                            width: 500,
                             modal: true, //capa principal, fondo opaco
                             buttons: {
                                 Cerrar: function () {

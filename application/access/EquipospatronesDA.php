@@ -43,6 +43,31 @@ class EquipospatronesDA {
             return null;
         }
     }
+    
+    public function DetallesPatron($patron) {
+        $consulta = "select 
+        equipospatrones.codigo,
+        equipospatrones.nombre ||' '|| marcas.nombre||' '|| equipospatrones.modelo as descripcion,
+        equipospatrones.serie
+        from equipospatrones,marcas
+        where equipospatrones.id_marca=marcas.codigo
+        and equipospatrones.codigo=:patron";
+        //instancia y conexion a base de datos
+        $dataBase = new CaliperDB();
+        try {
+            // preparar el DML a ejecutar
+            $query = $dataBase->prepare($consulta);
+            // ejecutar la consulta
+            $query->execute([':patron'=>$patron]);
+            // procesamos el resultado de la consulta
+            $resultados = $query->fetch(PDO::FETCH_OBJ);
+            return $resultados;
+        } catch (PDOException $exc) {
+            // si ocurre algun error se genera la excepcion y se crea un log 
+            AppLog::logDebug($exc->getMessage(), $exc->getFile(), $exc->getLine());
+            return null;
+        }
+    }
 
     public function EquipoEspecifico($param) {
         $consulta = "select equipospatrones.codigo from equipospatrones where equipospatrones.serie=:serie";

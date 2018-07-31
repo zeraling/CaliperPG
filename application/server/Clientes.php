@@ -20,14 +20,13 @@ if (empty($accion)) {
             $clientes = new ClientesCL();
             
             $nit=''.$Nit.'-'.$dv;
-            $disponible = $clientes->ConsultarNitCliente($nit,$CodEmpresa);
+            $disponible = $clientes->ConsultarNitCliente($nit);
             if (empty($disponible)) {
                 $MiCliente = new \Application\Data\ClientesVO();
                 $MiCliente->setNit($nit);
                 $MiCliente->setNombre($Nombre);
                 $MiCliente->setDireccion($Direccion);
                 $MiCliente->setTelefono("" . $Telefono . "");
-                $MiCliente->setId_empresa($CodEmpresa);
                 $MiCliente->setId_ciudad($ciudad);
                 
                 $ejec = $clientes->GuardarCliente($MiCliente);

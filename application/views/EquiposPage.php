@@ -44,7 +44,7 @@ class EquiposPage extends RenderPages{
         $data['listaMarcas']=$marcasEquipos->ListaMarcas();
 
         if ($code != null && $code > 0) {
-            $customController = new \Application\Controllers\EquiposCL();
+            $customController = new EquiposCL();
             $info = $customController->ConsultaUnEquipo($code);
             if(!empty($info)){
                 $data['equipo'] = $info[0];

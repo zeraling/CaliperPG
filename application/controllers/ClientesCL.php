@@ -15,8 +15,9 @@ namespace Application\Controllers;
  * @author Usuario
  */
 class ClientesCL {
+
     //put your code here
-    
+
     private $serviceData;
 
     function __construct() {
@@ -27,53 +28,50 @@ class ClientesCL {
     function __destruct() {
         $this->serviceData;
     }
-    
-    public function ListaClientesEmpresas($empresas) {
+
+    public function ListaClientes() {
         try {
-            $lista=  $this->serviceData->ClientesEmpresas($empresas);
-            return $lista;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-    
-    public function ConsultarNitCliente($nit,$empresa) {
-        try {
-            $lista=  $this->serviceData->ConsultarNit($nit,$empresa);
+            $lista = $this->serviceData->Lista();
             return $lista;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
 
-     public function ActualziarCliente(\Application\Data\ClientesVO $cliente){
-        try{
-            $Guardar=$this->serviceData->Actualizar($cliente);
-            return $Guardar;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-    
-    
-      public function GuardarCliente(\Application\Data\ClientesVO $cliente){
-        try{
-            $Guardar=  $this->serviceData->Guardar($cliente);
-            return $Guardar;
-        } catch (Exception $exc) {
-            echo $exc->getTraceAsString();
-        }
-    }
-    
-      public function ConsultaUnCliente($Cliente){
+    public function ConsultarNitCliente($nit) {
         try {
-            $cliente1=$this->serviceData->UnCliente($Cliente);
+            $lista = $this->serviceData->ConsultarNit($nit);
+            return $lista;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function ActualziarCliente(\Application\Data\ClientesVO $cliente) {
+        try {
+            $Guardar = $this->serviceData->Actualizar($cliente);
+            return $Guardar;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function GuardarCliente(\Application\Data\ClientesVO $cliente) {
+        try {
+            $Guardar = $this->serviceData->Guardar($cliente);
+            return $Guardar;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+
+    public function ConsultaUnCliente($Cliente) {
+        try {
+            $cliente1 = $this->serviceData->UnCliente($Cliente);
             return $cliente1;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
-    
-    
-    
+
 }

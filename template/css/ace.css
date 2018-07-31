@@ -12597,8 +12597,8 @@ tr.detail-row>td {
 [class*=widget-color-]>.widget-header>.widget-toolbar>.nav-tabs>li.active>a {
     background-color: #FFF;
     color: #555;
-    border-top-width: 1px;
-    margin-top: 0
+    font-weight: 600;
+    margin-top: 0;
 }
 
 .widget-toolbar>.nav-tabs .widget-color-orange>.widget-header>li>a {

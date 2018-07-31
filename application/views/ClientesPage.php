@@ -21,12 +21,8 @@ class ClientesPage extends RenderPages {
     //put your code here
 
     public function getIndex() {
-        global $dataUser;
-        $empresaEmpl = new \Application\Controllers\EmpresasempleadosCL();
-        $empAsign = $empresaEmpl->ConsultaAsignaciones($dataUser[0]->cedula);
-
         $customController = new \Application\Controllers\ClientesCL();
-        $data['listaClientes'] = $customController->ListaClientesEmpresas($empAsign->asignadas);
+        $data['listaClientes'] = $customController->ListaClientes();
         return $this->render('clientes/lista.twig', $data);
     }
     

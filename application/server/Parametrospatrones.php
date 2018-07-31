@@ -61,8 +61,8 @@ if (empty($accion)) {
            echo json_encode(array('respuesta'=>$ejct));
         break;
         case 'parametrosEquipo':
-            $parametrosControl = new ParametrosequiposCL();
-            $lista = $parametrosControl->ConsultaParametrosEquipo($codEquipo);
+            $parametrosControl = new ParametrospatronesCL();
+            $lista = $parametrosControl->ConsultaParametrosPatron($codPatron);
             ?>
             <table class="table">
                 <thead>
