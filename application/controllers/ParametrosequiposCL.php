@@ -81,5 +81,15 @@ class ParametrosequiposCL extends CustomFunctions {
         }
         return $regParam;
     }
+    
+    public function RetirarParametrosEquipo($tipo) {
+        $regParam = 0;
+        $parametros = $this->serviceData->ParametrosEquipo($tipo, true);
+        $arrayCargados = (explode(',', trim($parametros->arrayparams, '{}')));
+        foreach ($arrayCargados as $value) {
+            $this->serviceData->RetirarParametro($tipo, $value);
+        }
+        return $regParam;
+    }
 
 }

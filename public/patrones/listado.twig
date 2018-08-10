@@ -9,21 +9,21 @@
             <div id="datosInfo"></div>
             <div class=" col-xs-12 col-sm-10">
                 <div class="info-box">
-                    <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
+                    <span class="info-box-icon"><i class="fa fa-info"></i></span>
                     <div class="info-box-content">
-                        <span class="info-box-text"><b>Parametros</b></span>
+                        <span class="info-box-text"><b>Patrones</b></span>
                         <div class="progress">
                             <div class="progress-bar" style="width: 70%"></div>
                         </div>
                         <span class="progress-description">
-                            Aqui se muentran los parametros usados por los equipos al momento de calibrar
+                            Aqui se muestran, y se administran los equipos patrones usados para calibrar los equipos o dispositivos medicios
                         </span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
                 <!-- /.info-box -->
             </div>
-            <div class="col-xs-12 col-sm-7 widget-container-col">
+            <div class="col-xs-12 col-sm-8 widget-container-col">
                 <div class="widget-box widget-color-green2">
                     <div class="widget-header">
                         <h5 class="widget-title">Equipos Patrones</h5>
@@ -33,7 +33,7 @@
                             <div class="row">
                                 <div class="pull-left">
                                     <div class="btn-group">
-                                        <button data-toggle="dropdown" class="btn btn-primary btn-sm dropdown-toggle" aria-expanded="false">
+                                        <button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle" aria-expanded="false">
                                             Opciones <span class="ace-icon fa fa-caret-down icon-on-right"></span>
                                         </button>
                                         <ul class="dropdown-menu dropdown-success">  
@@ -41,14 +41,9 @@
                                             <li><a id="Editar"><i class="fa fa-edit"></i> Actualizar</a></li>  
                                         </ul>
                                     </div>
-                                    <div class="btn-group">
-                                        <button data-toggle="dropdown" class="btn btn-success btn-sm dropdown-toggle" aria-expanded="false">
-                                            Mas <span class="ace-icon fa fa-caret-down icon-on-right"></span>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-success">  
-                                            <li><a id="opCalibracion" ><i class="fa fa-calendar-check-o"></i> Calibracion </a></li>
-                                            <li><a id="opParams"><i class="fa fa-rocket"></i> Parametros </a></li>  
-                                        </ul>
+                                    <div class="btn-group mr10">
+                                        <button class="btn btn-primary btn-sm" id="opCalibracion" type="button"><i class="fa fa-calendar-check-o"></i> Fechas</button>  
+                                        <button class="btn btn-inverse btn-sm" id="opParams" type="button"><i class="fa fa-rocket"></i> Params</button>  
                                     </div>
                                 </div>
                                 <div class="pull-right">

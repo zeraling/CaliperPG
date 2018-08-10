@@ -43,8 +43,9 @@ if (empty($accion)) {
             $miEquipo->setId_marca($CodMarca);
             $miEquipo->setId_tipo($IdTipoEquipo);
             $miEquipo->setModelo($Modelo);
+            $miEquipo->setSerie($Serie);
 
-            $disponible = $equiposControl->VerificarUnEquipo($miEquipo);
+            $disponible = $equiposControl->VerificarUnEquipo($Serie);
             if (!empty($disponible)) {
                 echo json_encode(array('respuesta' => false, 'code' => 'creado'));
             } else {
@@ -60,6 +61,17 @@ if (empty($accion)) {
             $info = $equiposControl->ConsultaUnEquipo($id);
             echo json_encode($info[0]);
             break;
+        
+        case 'infoEquipo':
+            $equiposControl = new EquiposCL();
+            $info = $equiposControl->ConsultaInfoEquipo($code);
+            
+            echo '<span class="green">Equipo:</span> ' . $info->tipo . '<br>';
+            echo '<span class="green">Marca:</span> ' . $info->marca . '<br>';
+            echo '<span class="green">Modelo:</span> ' . $info->modelo . '<br>';
+            echo '<span class="green">Serie:</span> ' . $info->serie . '<br>';
+            
+        break;
         default:
             echo "Accion no Programada";
         break;

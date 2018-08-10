@@ -110,5 +110,22 @@ class EmpleadosCL {
             echo $exc->getTraceAsString();
         }
     }
+    /**/
 
-}
+    public function ConsultaPersonalCalibracion($usuario = 0){
+        try{
+            if($usuario>0){
+                $condicion='AND empleados.cedula='.$usuario.' AND empleados.id_cargo in(1)';
+            }else{
+                $condicion='AND empleados.id_cargo in(1)';
+            }
+            $ListaEmpleados=$this->serviceData->PersonalCalibracion($condicion);
+            return $ListaEmpleados;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
+    
+    
+    }

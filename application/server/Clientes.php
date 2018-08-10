@@ -69,27 +69,10 @@ if (empty($accion)) {
 
             break;
 
-        case 'Cliente':
-            $datos = Array();
-            $clientes = new ClientesCtrl();
-            $info1 = $clientes->InfoCliente($nitCarga);
-
-            if (!empty($info1)) {
-
-                $datos = array(
-                    'respuesta' => true,
-                    'nit' => $info1[0]->Nit,
-                    'nombre' => utf8_encode($info1[0]->Nombre),
-                    'direccion' => utf8_encode($info1[0]->Direccion),
-                    'telefono' => $info1[0]->Telefono,
-                    'idciudad' => $info1[0]->IdCiudad,
-                    'ciudad' => utf8_encode($info1[0]->Ciudad)
-                );
-            }else{
-                $datos = array('respuesta' => false);
-            }
-            echo json_encode($datos);
-            
+        case 'dataCliente':
+            $clientes = new ClientesCL();
+            $info = $clientes->InfoCliente($codCliente);
+            echo json_encode($info);  
         break;
         case 'listaClientes':
             $clientes = new ClientesCtrl();

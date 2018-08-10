@@ -74,4 +74,13 @@ class ClientesCL {
         }
     }
 
+    public function InfoCliente($codigo) {
+        try {
+            $lista=$this->serviceData->DetalleCliente($codigo);
+            return $lista;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
 }

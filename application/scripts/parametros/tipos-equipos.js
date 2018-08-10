@@ -20,7 +20,7 @@ $(document).ready(function () {
 
 
     $('#Agregar').click(function () {
-       location.href=gearsPage.baseUrl('parametros/admin');
+       location.href=gearsPage.baseUrl('parametros/admin-tipos');
     });
     
     $('#Actualizar').click(function () {
@@ -28,7 +28,7 @@ $(document).ready(function () {
         if (anSelected.length > 0) {
             var val = $(anSelected)[0].cells[0].childNodes[0].attributes[0].value;//codigo
             if (val > 0) {
-                window.location.href = gearsPage.baseUrl('parametros/admin/' + val);
+                window.location.href = gearsPage.baseUrl('parametros/admin-tipos/' + val);
             }
         }
     });
@@ -63,7 +63,7 @@ $(document).ready(function () {
     });
     
     $('#Parametros').click(function () {
-       location.href=gearsPage.baseUrl('parametros/lista');
+       location.href=gearsPage.baseUrl('parametros/admin-param');
     });
 
     $('#Unidades').click(function () {

@@ -74,12 +74,12 @@ $(document).ready(function () {
     $('#Ver').click(function () {
         var anSelected = gearsPage.fnGetSelected(oTable);
         if (anSelected.length > 0) {
-            var val = $(anSelected)[0].cells[0].childNodes[0].id;
-            if (val !== '' && val !== undefined) {
+            var val = parseInt($(anSelected)[0].cells[0].childNodes[0].attributes[0].value);//codigo
+            if (val>0) {
                 $.ajax({
                     caceh: false, type: "POST",
                     url: gearsPage.urlServer('Equipos'),
-                    data: 'serie=' + val + '&accion=info',
+                    data: 'code=' + val + '&accion=infoEquipo',
                     beforeSend: function () {
                         $('#AccionLoad').show();
                     }, success: function (resp) {

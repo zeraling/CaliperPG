@@ -18,7 +18,7 @@ if (empty($accion)) {
 } else {
 
     switch ($accion) {
-       case 'cargarParametroPatron':
+        case 'cargarParametroPatron':
             $parametrosControl = new ParametrospatronesCL();
             $lista = $parametrosControl->ConsultaParametrosPatron($codPatron);
             $datos = Array();
@@ -32,13 +32,13 @@ if (empty($accion)) {
                         'unidad' => $values->unidad,
                         'res' => $values->resolucion,
                         'up' => $values->incertidumbre,
-                        'tolera' => $values->valor_tolerancia . ' ' .$values->unidad_tolerancia,
-                        'opcion'=>$opciones
+                        'tolera' => $values->valor_tolerancia . ' ' . $values->unidad_tolerancia,
+                        'opcion' => $opciones
                     );
                 }
             }
             echo json_encode($datos);
-        break;
+            break;
         case 'asignarParametro':
             $parametrosControl = new ParametrospatronesCL();
             $miParametro = new \Application\Data\ParametrospatronesVO();
@@ -52,14 +52,14 @@ if (empty($accion)) {
             $miParametro->setValor_tolerancia($Tolerancia);
             $miParametro->setUnidad_tolerancia($unidTol);
 
-            $reg=$parametrosControl->AsignarParametroPatron($miParametro);
-            echo json_encode(array('respuesta'=>$reg));
-        break;
-       case 'eliminarParam':
-           $parametrosControl = new ParametrospatronesCL();
-           $ejct=$parametrosControl->EliminarParametroAsignado($code);
-           echo json_encode(array('respuesta'=>$ejct));
-        break;
+            $reg = $parametrosControl->AsignarParametroPatron($miParametro);
+            echo json_encode(array('respuesta' => $reg));
+            break;
+        case 'eliminarParam':
+            $parametrosControl = new ParametrospatronesCL();
+            $ejct = $parametrosControl->EliminarParametroAsignado($code);
+            echo json_encode(array('respuesta' => $ejct));
+            break;
         case 'parametrosEquipo':
             $parametrosControl = new ParametrospatronesCL();
             $lista = $parametrosControl->ConsultaParametrosPatron($codPatron);
@@ -80,6 +80,10 @@ if (empty($accion)) {
                             echo '<td>' . $value->parametro . '</td>';
                             echo '</tr>';
                         }
+                    } else {
+                        echo '<tr>';
+                        echo '<td colspan="2">No hay parametros cargados</td>';
+                        echo '</tr>';
                     }
                     ?>  
                 </tbody>

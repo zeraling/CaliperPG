@@ -1,0 +1,185 @@
+{% extends "pageMaster.twig" %}
+{% block style_plugin %}
+    <!-- daterange picker -->
+    <link href="{{ 'plugins/datepicker/css/bootstrap-datepicker3.min.css'|baseUrl}}" type="text/css" rel="stylesheet" />
+    <link href="{{ 'plugins/datepicker/css/bootstrap-timepicker.min.css'|baseUrl}}" type="text/css" rel="stylesheet" />
+    <link href="{{ 'plugins/datepicker/css/bootstrap-datetimepicker.min.css'|baseUrl}}" type="text/css" rel="stylesheet" />
+{% endblock %}
+{% block content %}
+    <div class="page-content">
+        <div id="datosInfo"></div>
+        <div class="col-sm-6 widget-container-col">
+            <form id="formInforme" name="formInforme" method="POST" >
+                <div class="widget-box widget-color-green2">
+                    <div class="widget-header">
+                        <h5 class="widget-title smaller">Detalles del Informe</h5>
+                        <div class="widget-toolbar no-border">
+                            <button id="btnPruebas" class="btn btn-xs btn-success">
+                                <i class="ace-icon fa fa-arrow-right"></i> Pruebas
+                            </button>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <input type="hidden" id="idInforme" name="idInforme" value="{{informe._id}}"/>
+                            <div class="form-horizontal">
+                                <fieldset>
+                                    <legend>Informe de calibracion: {{informe.numero}}</legend>
+                                    <div class="form-group">
+                                        <div class="col-sm-10 col-sm-offset-1">
+                                            <div class="well">
+                                                <b>Cliente:</b> [ {{informe.cliente.nit}} ] {{informe.cliente.nombre}} <br>
+                                                <b>Direccion:</b> {{informe.cliente.direccion}} <br>
+                                                <b>Ciudad:</b> {{informe.cliente.ciudad}} - {{informe.cliente.departamento}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-10 col-sm-offset-1">
+                                            <div class="well">
+                                                <b>Tipo:</b> {{informe.equipo.tipo}}<br>
+                                                <b>Marca:</b> {{informe.equipo.marca}}, <b>Modelo:</b> {{informe.equipo.modelo}} <br>
+                                                <b>Serie:</b> {{informe.equipo.serie}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Condiciones de la calibracion</legend> 
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label"><span class="label label-important">Temp. Inicial:</span></label>
+                                        <div class="col-sm-3">
+                                            <div class="input-group">
+                                                {% set tempInicial = (informe)?(['value="',informe.calibracion.temperatura.inicial,'"']|join) :'value=""'  %}
+                                                <input type="text" id="temperaturaInicial" maxlength="5" placeholder="Inicial" name="temperaturaInicial" class="{required:true} form-control decimal" {{tempInicial|raw}} >
+                                                <span class="input-group-addon">C°</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label"><span class="label label-important">Temp. Final:</span></label>
+                                        <div class="col-sm-3">
+                                            <div class="input-group">
+                                                {% set tempFinal = (informe)?(['value="',informe.calibracion.temperatura.final,'"']|join) :'value=""'  %}
+                                                <input type="text" id="temperaturaFinal" maxlength="5" placeholder="Final" name="temperaturaFinal" class="{required:true} form-control decimal" {{tempFinal|raw}} />
+                                                <span class="input-group-addon">C°</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label"><span class="label label-important">Humedad Rel.Inicial:</span></label>
+                                        <div class="col-sm-3">
+                                            <div class="input-group">
+                                                {% set humInicial = (informe)?(['value="',informe.calibracion.humedad.inicial,'"']|join) :'value=""'  %}
+                                                <input type="text" id="humedadInicial" maxlength="5" placeholder="Inicial" name="humedadInicial" class="{required:true} form-control decimal" {{humInicial|raw}} />
+                                                <span class="input-group-addon">C°</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label"><span class="label label-important">Humedad Rel.Final:</span></label>
+                                        <div class="col-sm-3">
+                                            <div class="input-group">
+                                                {% set humFinal = (informe)?(['value="',informe.calibracion.humedad.inicial,'"']|join) :'value=""'  %}
+                                                <input type="text" id="humedadFinal" maxlength="5" placeholder="Final" name="humedadFinal" class="{required:true} form-control decimal" {{humFinal|raw}} />
+                                                <span class="input-group-addon">C°</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>            
+                                <fieldset>
+                                    <legend>Detallles de la calibracion</legend>
+                                    <div class="form-group">
+                                        <div class="col-sm-4 control-label">
+                                            <span class="label label-important">Responsable:</span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <select id="IdResponsable" name="IdResponsable" class="{required:true} form-control">
+                                                {%if empleadosFirma %}
+                                                    <option value=""> - Seleccione una</option>
+                                                    {% for firmas in empleadosFirma %}
+                                                        {% set firma = (firmas and informe.calibracion.ingeniero.cedula==firmas.cedula)?'selected="selected"':'' %}
+                                                        <option value="{{firmas.cedula}}" {{firma}}>{{firmas.usuario}}</option>
+                                                    {%endfor%}
+                                                {%else%}
+                                                    <option value="">- No hay datos- </option>
+                                                {%endif%}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-4 control-label">
+                                            <span class="label label-important">Lugar:</span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span></span>
+                                            {% set lugar = (informe)?(['value="',informe.calibracion.lugar,'"']|join) :'value=""'  %}
+                                            <input type="text" id="lugar" onkeyup="this.value = this.value.toUpperCase()" name="lugar" placeholder="Lugar"  class="{required:true} form-control" {{lugar|raw}} />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">
+                                            <span class="label label-important">Fecha Calibracion:</span>
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <span></span>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                {% set calibracion = (informe.calibracion.fecha)?(['value="', informe.calibracion.fecha,'"']|join) :'value=""'  %}
+                                                <input type="text" id="FechaCalibracion" name="FechaCalibracion" placeholder="Fecha Calibracion" readonly="true" class="{required:true} form-control" {{calibracion|raw}}/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">
+                                            <span class="label label-important">Fecha Recepcion:</span>
+                                        </label>
+                                        <div class="col-sm-5">
+                                            <span></span>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                {% set recepcion = (informe.calibracion.recepcion)?(['value="', informe.calibracion.recepcion,'"']|join) :'value=""'  %}
+                                                <input type="text" id="FechaRecepcion" name="FechaRecepcion" placeholder="Fecha Recepcion" readonly="true" class="{required:true} form-control" {{recepcion|raw}}/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label"><span class="label label-important">Observacion:</span></label>
+                                        <div class="col-sm-6">
+                                            <textarea id="observa" name="observa"  placeholder="Observacion" style="resize: none;" class="form-control" rows="3">{{informe.observaciones}}</textarea>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="widget-toolbox padding-8 clearfix">
+                            <div class="row">
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <button id="btnGuardar" type="submit" class="btn btn-success">Guardar</button>
+                                    <button id="btnVolver" type="button" class="btn btn-default">Volver</button> 
+                                </div>
+                            </div>
+                            <img id="AccionLoad" class="hide" src="{{'template/images/loaders/bar120.gif'|baseUrl}}">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div><!-- /.page-content -->
+{% endblock %}
+{% block js_custom %}
+    <!-- datepicker -->
+    <script type="text/javascript" src="{{ 'plugins/datepicker/js/bootstrap-datepicker.min.js'|baseUrl}}"></script>
+    <script type="text/javascript" src="{{ 'plugins/datepicker/js/bootstrap-timepicker.min.js'|baseUrl}}"></script>
+    <script type="text/javascript" src="{{ 'plugins/moment/moment-with-locales.min.js'|baseUrl}}"></script>
+    <!-- Validate --> 
+    <script type="text/javascript" src="{{ 'plugins/jquery-validate/dist/jquery.validate.min.js'|baseUrl}}"></script>
+    <script type="text/javascript" src="{{ 'plugins/jquery-validate/lib/jquery.metadata.js'|baseUrl}}"></script>
+    <script type="text/javascript" src="{{ 'plugins/jquery-validate/localization/messages_es.js'|baseUrl}}"></script> 
+    <!-- Custom -->
+    <script type="text/javascript" src="{{'application/scripts/informes/detalles.js'|baseUrl}}"></script>
+{% endblock %}

@@ -1,126 +1,136 @@
 {% extends "pageMaster.twig" %}
 {% block style_plugin %}
-
+    <!-- Select2 --> 
+    <link rel="stylesheet" href="{{ 'plugins/select2/select2.min.css'|baseUrl}}" />
 {% endblock %}
-
-{# 
-
-{% set codigo = (cliente)?(['value="', cliente.Codigo,'"']|join) :''  %} 
-{% set tipo = (actividad and actividad.IdTipo==tipos.Codigo)?'selected="selected"':'' %}
-
-#}
-
 {% block content %}
     <div class="page-content">
-
+        <div id="datosInfo"></div>
         <div class="col-sm-6 widget-container-col">
-            <div class="widget-box widget-color-green2">
-                <div class="widget-header">
-                    <h5 class="widget-title smaller">Registro de informes</h5>
-                    <div class="widget-toolbar no-border">
-                        <ul class="nav nav-tabs" id="myTab">
-                            <li class="active"><a href="#">General</a></li>
-                            <li class=""><a href="#">Detalles</a></li>
-                        </ul>
+            <form id="registrarInforme" name="registrarInforme" method="POST" action="#">
+                <div class="widget-box widget-color-green2">
+                    <div class="widget-header">
+                        <h5 class="widget-title smaller">Registro de informes</h5>
                     </div>
-                </div>
-                <div class="widget-body">
-                    <div class="widget-main">
-                        <input type="hidden" id="Codigo" name="Codigo" value="<?php echo!empty($MiInforme) ? $MiInforme[0]->Numero : ''; ?>"/>
-                        <div class="form-horizontal">
-                            <fieldset>
-                                <legend class="text-center">Certificado</legend>
-                                <div class="form-group">
-                                    <div class="col-sm-3 control-label">
-                                        <span class="label label-primary">Empresa:</span>
-                                    </div>
-                                    <div class="col-sm-5">
-                                        <select id="IdEmpresa" name="IdEmpresa" class="form-control">
-                                            {%if listEmpresas %}
-                                                <option value=""> - Seleccione una</option>
-                                                {% for empresas in listEmpresas %}
-                                                    <option value="{{empresas.codigo}}">{{empresas.nombre}}</option>
-                                                {%endfor%}
-                                            {%else%}
-                                                <option value="">- No hay datos- </option>
-                                            {%endif%}
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-3 control-label">
-                                        <span class="label label-important">Cliente:</span>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <select id="IdCliente" name="IdCliente" class="{required:true} form-control">
-
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        <span class="label label-important">Numero:</span>
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <div class="input-group">
-                                            <input type="number" id="numero" name="numero" onkeypress="return gearsPage.SoloNumeros(event)" placeholder="Numero" class="{required:true} form-control"/>
-                                            <span id="opNumero" class="input-group-btn ">
-                                                <button id="verificarNo" class="btn btn-white btn-success" type="button" ><i class="fa fa-check"></i></button>
-                                            </span>   
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div class="form-horizontal">
+                                <fieldset>
+                                    <legend class="text-center">Cliente</legend>
+                                    <div class="form-group">
+                                        <div class="col-sm-3 control-label">
+                                            <span class="label label-primary">Empresa:</span>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <span></span>
+                                            <select id="IdEmpresa" name="IdEmpresa" class="{required:true} form-control">
+                                                {%if listEmpresas %}
+                                                    <option value=""> - Seleccione una</option>
+                                                    {% for empresas in listEmpresas %}
+                                                        <option value="{{empresas.codigo}}">{{empresas.nombre}}</option>
+                                                    {%endfor%}
+                                                {%else%}
+                                                    <option value="">- No hay datos- </option>
+                                                {%endif%}
+                                            </select>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">
-                                        <span class="label label-important">Firma:</span>
-                                    </label>
-                                    <div class="col-sm-5">
-                                        <span></span>
-                                        <select id="IdPersonal" name="IdPersonal" class="{required:true} form-control" >
-
-                                        </select>
+                                    <div class="form-group">
+                                        <div class="col-sm-3 control-label">
+                                            <span class="label label-important">Cliente:</span>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <select id="IdCliente" name="IdCliente" class="{required:true} form-control">
+                                                {%if listaClientes %}
+                                                    <option value=""> - Seleccione una</option>
+                                                    {% for clientes in listaClientes %}
+                                                        <option value="{{clientes.codigo}}">{{clientes.nombre}}</option>
+                                                    {%endfor%}
+                                                {%else%}
+                                                    <option value=""></option>
+                                                {%endif%}
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                            </fieldset> 
-                            <fieldset>
-                                <legend class="text-center">Equipo</legend>
-                                <div id="formEquipo" class="form-group">
-                                    <div class="col-sm-3 control-label">
-                                        <span class="label label-primary">Equipo:</span>
+                                    <div class="form-group">
+                                        <div class="col-sm-3 control-label">
+                                            <span class="label label-important">Detalles:</span>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <div id="detalCliente" class="well">
+                                                Informacion del cliente
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="input-group">
-                                            <select id="IdEquipo" name="IdEquipo" class="{required:true} form-control">
-
+                                </fieldset> 
+                                <fieldset>
+                                    <legend class="text-center">Equipo</legend>
+                                    <div class="form-group">
+                                        <div class="col-sm-3 control-label">
+                                            <label class="label label-primary">Tipo:</label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span></span>
+                                            <select id="IdTipoEquipo" name="IdTipoEquipo" class="form-control">
+                                                {% if listTipos %}
+                                                    <option value=""> - Selecione Uno - </option>
+                                                    {%for tipos in listTipos%}
+                                                        <option value="{{tipos.id}}" >{{tipos.nombre}}</option>
+                                                    {%endfor%}
+                                                {% else %}
+                                                    <option value=""></option>
+                                                {% endif %}
                                             </select> 
-                                            <span class="input-group-btn">
-                                                <button id="cargarEquipo" type="button" class="btn btn-sm btn-primary" ><i class="fa fa-plus-circle"></i></button>
-                                            </span>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-3 control-label">
-                                        <span class="label label-important">Serie:</span>
+                                    <div class="form-group">
+                                        <div class="col-sm-3 control-label">
+                                            <label class="label label-primary">Detalles:</label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <span></span>
+                                            <select id="CodEquipo" name="CodEquipo" class="{required:true} form-control">
+                                                <option value=""></option>
+                                            </select> 
+                                        </div>
                                     </div>
-                                    <div class="col-sm-5">
-                                        <span></span>
-                                        <input type="text"  id="noSerie" name="noSerie"  placeholder="noSerie"  class="{required:true,messages:{required:'* Favor digite La la Serie del Equipo'}} form-control" /> 
+                                </fieldset> 
+                                <fieldset>           
+                                    <legend class="text-center">Informe</legend>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">
+                                            <span class="label label-important">Numero:</span>
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <input type="number" id="numero" name="numero" onkeypress="return gearsPage.SoloNumeros(event)" placeholder="Numero" class="{required:true} form-control"/>
+                                                <span id="opNumero" class="input-group-btn ">
+                                                    <button id="verificarNo" class="btn btn-white btn-success" type="button" ><i class="fa fa-check"></i></button>
+                                                </span>   
+                                            </div>
+                                        </div>
                                     </div>
+                                </fieldset> 
+                            </div>
+                        </div>
+                        <div class="widget-toolbox padding-8 clearfix">
+                            <div class="row">
+                                <div class="col-sm-8 col-sm-offset-4">
+                                    <button id="btnGuardar" type="submit" class="btn btn-success">Guardar</button>
+                                    <button id="btnVolver" type="button" class="btn btn-default">Volver</button> 
                                 </div>
-                            </fieldset> 
+                            </div>
+                            <img id="AccionLoad" class="hide" src="{{'template/images/loaders/bar120.gif'|baseUrl}}">
                         </div>
                     </div>
-                    <div class="widget-toolbox padding-8 clearfix">
-                        <img id="AccionLoad" class="hide" src="<?php echo DIR_IMAGES ?>loaders/bar120.gif">
-                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div><!-- /.page-content -->
 {% endblock %}
-{# <img id="AccionLoad" class="hide" src="{{'template/loaders/bar120.gif'|baseUrl}}">  #}
 {% block js_custom %}
+    <!-- Select2 --> 
+    <script type="text/javascript" src="{{ 'plugins/select2/select2.min.js'|baseUrl}}"></script>
     <!-- Validate --> 
     <script type="text/javascript" src="{{ 'plugins/jquery-validate/dist/jquery.validate.min.js'|baseUrl}}"></script>
     <script type="text/javascript" src="{{ 'plugins/jquery-validate/lib/jquery.metadata.js'|baseUrl}}"></script>

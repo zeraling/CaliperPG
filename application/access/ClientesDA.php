@@ -141,5 +141,35 @@ class ClientesDA {
             return null;
         }
     }
+    
+     public function DetalleCliente($codigo) {
+        $consulta = "SELECT 
+        clientes.codigo,
+        clientes.nit,
+        clientes.nombre,
+        clientes.direccion,
+        clientes.telefono,
+        departamentos.nombre as departamento,
+        ciudades.nombre as ciudad
+        FROM clientes,ciudades,departamentos
+        WHERE clientes.id_ciudad=ciudades.codigo
+        AND ciudades.cod_departamento=departamentos.codigo
+        AND clientes.codigo=:cliente";
+
+        $dataBase = new CaliperDB();
+        try {
+            // preparar el DML a ejecutar
+            $query = $dataBase->prepare($consulta);
+            // ejecutar la consulta
+            $query->execute(['cliente' => $codigo]);
+            // procesamos el resultado de la consulta
+            $resultados = $query->fetch(PDO::FETCH_OBJ);
+            return $resultados;
+        } catch (PDOException $exc) {
+            // si ocurre algun error se genera la excepcion y se crea un log 
+            AppLog::logDebug($exc->getMessage(), $exc->getFile(), $exc->getLine());
+            return null;
+        }
+    }
 
 }

@@ -11,13 +11,32 @@
                 <div class="col-xs-12 col-sm-6 widget-container-col">
                     <div class="widget-box widget-color-dark">
                         <div class="widget-header">
-                            <h5 class="widget-title">Opciones de registro de equipos y parametros!</h5>
+                            <h5 class="widget-title">Opciones de registro de tipos de equipos!</h5>
                         </div>
                         <div class="widget-body">
                             <div class="widget-main">
                                 {% set codigo = (tipoEq)?(['value="', tipoEq.id,'"']|join) :'value=""'  %}
                                 <input type="hidden" name="Codigo" id="Codigo" {{codigo|raw}}/>
                                 <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <div class="col-sm-4 control-label">
+                                            <label class="label label-important">Parametros:</label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span></span>
+                                            <select id="Categoria" name="Categoria" class="{required:true} form-control">
+                                                {% if categorias %}
+                                                     <option value=""> - Seleccione Uno - </option>
+                                                    {%for key,tipo in categorias %}
+                                                        {% set categoria = (tipoEq and tipoEq.categoria==key)?'selected="selected"':'' %}
+                                                        <option value="{{key}}" {{categoria}}>{{tipo}}</option>
+                                                    {%endfor%}
+                                                {% else %}
+                                                    <option value=""> - No Hay Datos - </option>
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <div class="col-sm-4 control-label">
                                             <label class="label label-important">Nombres:</label>
@@ -34,7 +53,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <span></span>
-                                            <select id="parametros" name="parametros[]" multiple="multiple" class="{required:true} form-control">
+                                            <select id="parametros" name="parametros[]" multiple="multiple" class="form-control">
                                                 {% if listParametros %}
                                                     {%for parametros in listParametros%}
                                                         {% set parametro = (tipoEq and parametros.asign!=null)?'selected="selected"':'' %}
@@ -72,5 +91,5 @@
     <script type="text/javascript" src="{{ 'plugins/jquery-validate/lib/jquery.metadata.js'|baseUrl}}"></script>
     <script type="text/javascript" src="{{ 'plugins/jquery-validate/localization/messages_es.js'|baseUrl}}"></script> 
     <!-- Custom -->
-    <script type="text/javascript" src="{{'application/scripts/parametros/admin.js'|baseUrl}}"></script>
+    <script type="text/javascript" src="{{'application/scripts/parametros/admin-tipos.js'|baseUrl}}"></script>
 {% endblock %}

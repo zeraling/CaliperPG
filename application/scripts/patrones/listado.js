@@ -8,16 +8,13 @@ var oTable;
 $(document).ready(function () {
 
     oTable = $('#listaEquipos').dataTable({
-        "sScrollX": "100%",
-        "sScrollXInner": "110%",
-        "bScrollCollapse": true,
         "oLanguage": gearsPage.idiomaTablas()
     });
 
     gearsPage.seleccionTablas('listaEquipos', oTable);
 
     $('#Nuevo').click(function () {
-        window.location.href = gearsPage.baseUrl('patrones/form')
+        window.location.href = gearsPage.baseUrl('equipos/form')
     });
 
     $('#Editar').click(function () {
@@ -25,7 +22,7 @@ $(document).ready(function () {
         if (anSelected.length > 0) {
             var val = $(anSelected)[0].cells[0].childNodes[0].attributes[0].value;//codigo
             if (val > 0) {
-                window.location.href = gearsPage.baseUrl('patrones/form/' + val);
+                window.location.href = gearsPage.baseUrl('equipos/form/' + val);
             }
         }
     });
@@ -57,7 +54,7 @@ $(document).ready(function () {
             if (val > 0) {
                 $.ajax({
                     caceh: false, type: "POST",
-                    url: gearsPage.urlServer('Equipospatrones'),
+                    url: gearsPage.urlServer('Calibracionespatrones'),
                     data: 'codePatron=' + val + '&accion=info',
                     beforeSend: function () {
                         $('#AccionLoad').show();
@@ -89,8 +86,8 @@ $(document).ready(function () {
             if (val > 0) {
                 $.ajax({
                     caceh: false, type: "POST",
-                    url: gearsPage.urlServer('Equipospatrones'),
-                    data: 'codePatron=' + val + '&accion=info',
+                    url: gearsPage.urlServer('Parametrospatrones'),
+                    data: 'codPatron=' + val + '&accion=parametrosEquipo',
                     beforeSend: function () {
                         $('#AccionLoad').show();
                     }, success: function (resp) {

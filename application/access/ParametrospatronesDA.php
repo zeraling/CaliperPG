@@ -33,8 +33,8 @@ class ParametrospatronesDA {
         parametrospatrones.incertidumbre,
         parametrospatrones.valor_tolerancia,
         parametrospatrones.unidad_tolerancia
-        from equipospatrones,parametrospatrones,parametros,unidadesparametros
-        where equipospatrones.codigo=parametrospatrones.cod_patron
+        from equipos,parametrospatrones,parametros,unidadesparametros
+        where equipos.codigo=parametrospatrones.cod_patron
         and parametros.id=parametrospatrones.id_parametro
         and unidadesparametros.id=parametrospatrones.id_unidad
         and parametrospatrones.cod_patron=:patron';

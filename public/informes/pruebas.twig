@@ -1,1 +1,113 @@
-{# empty Twig template #}
+{% extends "pageMaster.twig" %}
+{% block style_plugin %}
+    <!-- Select2 --> 
+    <link rel="stylesheet" href="{{ 'plugins/select2/select2.min.css'|baseUrl}}" />
+{% endblock %}
+{% block content %}
+    <div class="page-content">
+        <div class="row">
+            <div class=" col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-green">
+                        <i class="fa fa-file-text"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">
+                            <b>{{informe.equipo.tipo}} {{informe.equipo.marca}} {{informe.equipo.modelo}}</b>
+                            <i style="font-size: 8pt">{{informe.equipo.serie}}</i>
+                        </span>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 70%"></div>
+                        </div>
+                        <span class="progress-description">
+                            <b>INFORME No: </b> {{informe.numero}}, <b>Cliente:</b> [ {{informe.cliente.nit}} ] {{informe.cliente.nombre}}
+                        </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+            </div>
+        </div>
+        <div class="hr hr-double hr-dotted hr10"></div>
+        <div class="row">
+            <div id="datosInfo"></div>
+            <div class="col-xs-12 col-sm-5 widget-container-col">
+                <div class="widget-box widget-color-dark">
+                    <div class="widget-header">
+                        <h5 class="widget-title">Opciones para Registro</h5>
+                        <div class="widget-toolbar">
+                            <button id="agregarPrueba" class="btn btn-minier btn-inverse"><i class="ace-icon fa fa-plus-circle"></i> Agregar </button>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <input type="hidden" id="idInforme" name="idInforme" value="{{informe._id}}"/>
+                            <div class="form-horizontal">
+                                <div id="opParametrosInforme" class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        <span class="label label-primary">Pruebas:</span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <select id="listaParametros" name="listaParametros" class="form-control" >
+                                                <option value="">No se Han Cargado Datos</option>                
+                                            </select> 
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-sm btn-success" id="mostrarPrueba"><i class="fa fa-eye"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="panelEdit"></div>
+                                <div id="opcion"></div> 
+                            </div>  
+                        </div>
+                        <div class="widget-toolbox padding-8 clearfix">
+                            <button class="btn btn-xs btn-default pull-left"><i class="ace-icon fa fa-reply"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-7 widget-container-col">
+                <div class="widget-box widget-color-green2">
+                    <div class="widget-header">
+                        <h5 class="widget-title">Detalles de Pruebas </h5>
+                        <div class="widget-toolbar">
+                            <a id="printInforme" ><i class="ace-icon fa fa-file-text"></i></a>
+                            <a id="printCumplimiento" ><i class="ace-icon fa fa-file-text-o"></i></a>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div id="simuladores"></div>
+                            <div id="tablaPruebas" class="table-responsive">
+                                <div class="alert alert-warning">
+                                    No se han establecido parametros de registro
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-toolbox padding-8 clearfix">
+                        <div class="center">
+                            <button id="GuardarResultados" type="button" class="btn btn-success hidden"><i class="fa fa-save"></i> Guardar</button>
+                            <button id="eliminaResultado" type="button" class="btn btn-danger hidden"><i class="fa fa-times"></i> Eliminar</button>
+                        </div>
+                        <img id="AccionLoad" class="hide" src="{{'template/images/loaders/bar120.gif'|baseUrl}}">
+                    </div>
+                </div>
+            </div>
+            <div id="detele" style="display: none;" title="Eliminar Prueba">
+                <div id="detele1">
+                    <i class="fa fa-exclamation-circle"></i>
+                    Esta Seguro que desea Eliminar este Parametro
+                </div>
+            </div>
+        </div>    
+    </div><!-- /.page-content -->
+{% endblock %}
+{% block js_custom %}
+    <!-- Select2 --> 
+    <script type="text/javascript" src="{{ 'plugins/select2/select2.min.js'|baseUrl}}"></script>
+    <!-- Custom -->
+    <script type="text/javascript" src="{{'application/scripts/informes/pruebas.js'|baseUrl}}"></script>
+{% endblock %}

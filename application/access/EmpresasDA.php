@@ -36,5 +36,23 @@ class EmpresasDA {
             return null;
         }
     }
+    
+    public function InfoEmpresa($empresa) {
+        switch ($empresa) {
+            case 1:
+                $nombre = 'CR EQUIPOS';
+                break;
+            case 2:
+                $nombre = 'SINTECH SAS';
+                break;
+            case 3:
+                $nombre = 'FIRST MEDICAL DE COLOMBIA';
+                break;
+            default:
+                $nombre = '';
+                break;
+        }
+         return $nombre;
+    }
 
 }

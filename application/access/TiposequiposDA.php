@@ -38,13 +38,14 @@ class TiposequiposDA {
         }
     }
 
-    public function Agregar($nombre) {
-        $consulta = "INSERT INTO tiposequipos(nombre)VALUES(:nombr)";
+    public function Agregar($nombre,$tipo) {
+        $consulta = "INSERT INTO tiposequipos(nombre,categoria)VALUES(:nombr,:categoria)";
         $dataBase = new CaliperDB();
         try {
             // preparar el DML a ejecutar
             $query = $dataBase->prepare($consulta);
             $query->bindValue(':nombr', $nombre, PDO::PARAM_STR);
+            $query->bindValue(':categoria', $tipo, PDO::PARAM_STR);
             // ejecutar la consulta
             $query->execute();
             $identidad = $dataBase->lastInsertId();
@@ -95,15 +96,16 @@ class TiposequiposDA {
         }
     }
     
-    public function Lista() {
+    public function ConsultaGeneral() {
         $consulta = "select 
         tiposequipos.id,
         tiposequipos.nombre,
+        tiposequipos.categoria,
         count(parametrosequipos.id_tipoequipo) as cantidad
         from tiposequipos
-                left join parametrosequipos 
-                on parametrosequipos.id_tipoequipo=tiposequipos.id
-        group by tiposequipos.id,tiposequipos.nombre";
+            left join parametrosequipos 
+            on parametrosequipos.id_tipoequipo=tiposequipos.id
+        group by tiposequipos.id,tiposequipos.nombre,tiposequipos.categoria";
         //instancia y conexion a base de datos
         $dataBase = new CaliperDB();
         try {
@@ -121,6 +123,53 @@ class TiposequiposDA {
         }
     }
 
-   
+    public function ConsultaEquipos() {
+        $consulta = "select 
+        tiposequipos.id,
+        tiposequipos.nombre
+        from tiposequipos
+        where tiposequipos.categoria='equipo'";
+        //instancia y conexion a base de datos
+        $dataBase = new CaliperDB();
+        try {
+            // preparar el DML a ejecutar
+            $query = $dataBase->prepare($consulta);
+            // ejecutar la consulta
+            $query->execute();
+            // procesamos el resultado de la consulta
+            $resultados = $query->fetchAll(PDO::FETCH_OBJ);
+            return $resultados;
+        } catch (PDOException $exc) {
+            // si ocurre algun error se genera la excepcion y se crea un log 
+            AppLog::logDebug($exc->getMessage(), $exc->getFile(), $exc->getLine());
+            return null;
+        }
+    }
 
+    
+    public function EquiposPorTipo($tipo) {
+        $consulta = "select 
+        equipos.codigo,
+        tiposequipos.nombre ||' '|| marcas.nombre||' '|| equipos.modelo as descripcion,
+        equipos.serie
+        from tiposequipos,equipos,marcas
+        where equipos.id_marca=marcas.codigo
+        and tiposequipos.id=equipos.id_tipo
+        and tiposequipos.id=:tipo";
+        $dataBase = new CaliperDB();
+        try {
+            // preparar el DML a ejecutar
+            $query = $dataBase->prepare($consulta);
+            // ejecutar la consulta
+            $query->execute([':tipo' => $tipo]);
+            // procesamos el resultado de la consulta
+            $resultados = $query->fetchAll(PDO::FETCH_OBJ);
+            return $resultados;
+        } catch (PDOException $exc) {
+            // si ocurre algun error se genera la excepcion y se crea un log 
+            AppLog::logDebug($exc->getMessage(), $exc->getFile(), $exc->getLine());
+            return null;
+        }
+    }
+    
 }

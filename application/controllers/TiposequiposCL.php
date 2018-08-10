@@ -28,14 +28,34 @@ class TiposequiposCL {
         $this->serviceData;
     }
     
-    public function ListaTiposEquipos() {
+    public function ListaGeneral() {
         try {
-            $lista=  $this->serviceData->Lista();
+            $lista=  $this->serviceData->ConsultaGeneral();
             return $lista;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
         }
     }
+    
+    public function ConsultaEquiposTipo($tipo) {
+        try {
+            $lista=  $this->serviceData->EquiposPorTipo($tipo);
+            return $lista;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
+    public function ListaTiposEquipos() {
+        try {
+            $lista=  $this->serviceData->ConsultaEquipos();
+            return $lista;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
+    
      public function VerificarTipo($nombre) {
         try {
             $lista=$this->serviceData->Verificar($nombre);
@@ -45,9 +65,9 @@ class TiposequiposCL {
         }
     }
      
-    public function AgregarTipo($nombre) {
+    public function AgregarTipo($nombre,$tipo) {
         try {
-            $lista=$this->serviceData->Agregar($nombre);
+            $lista=$this->serviceData->Agregar($nombre,$tipo);
             return $lista;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

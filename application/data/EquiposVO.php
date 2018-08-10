@@ -20,6 +20,7 @@ class EquiposVO {
     private $id_tipo;
     private $id_marca;
     private $modelo;
+    private $serie;
 
     function getCodigo() {
         return $this->codigo;
@@ -35,6 +36,10 @@ class EquiposVO {
 
     function getModelo() {
         return $this->modelo;
+    }
+
+    function getSerie() {
+        return $this->serie;
     }
 
     function setCodigo($codigo) {
@@ -53,4 +58,7 @@ class EquiposVO {
         $this->modelo = $modelo;
     }
 
+    function setSerie($serie) {
+        $this->serie = $serie;
+    }
 }

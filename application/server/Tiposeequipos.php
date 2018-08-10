@@ -22,16 +22,20 @@ if (empty($accion)) {
             if (!empty($disponible)) {
                 echo json_encode(array('respuesta' => false, 'code' => 'creado'));
             } else {
-                $idReg = $tiposControl->AgregarTipo($Nombre);
+                $idReg = $tiposControl->AgregarTipo($Nombre,$Categoria);
                 if ($idReg > 0) {
-                    $parametrosControl = new ParametrosequiposCL();
-                    $regs = $parametrosControl->AgregarParametrosEquipo($idReg, $parametros);
+                    if(isset($parametros)){
+                        $parametrosControl = new ParametrosequiposCL();
+                        $regs = $parametrosControl->AgregarParametrosEquipo($idReg, $parametros);
+                    }else{
+                        $regs=0;
+                    }
                     echo json_encode(array('respuesta' => true, 'code' => $idReg, 'params' => $regs));
                 } else {
                     echo json_encode(array('respuesta' => false, 'code' => '', 'params' => 0));
                 }
             }
-            break;
+        break;
         case 'Actualizar':
             $tiposControl = new TiposequiposCL();
             
@@ -48,13 +52,34 @@ if (empty($accion)) {
                 $actualiza= $tiposControl->ActualizarTipo($Codigo,$Nombre);
                 if ($actualiza) {
                     $parametrosControl = new ParametrosequiposCL();
-                    $regs = $parametrosControl->ActualziarParametrosEquipo($Codigo, $parametros);
-                    echo json_encode(array('respuesta' => true, 'code' => $Codigo, 'params' => $regs));
+                    
+                    $paramActuales=$parametrosControl->ConsultaParametrosEquipo($Codigo);
+                    if(!empty($paramActuales)&&!isset($parametros)){
+                        $regs = $parametrosControl->RetirarParametrosEquipo($Codigo);
+                    }elseif(!empty($paramActuales)&&isset($parametros)){
+                        $regs = $parametrosControl->ActualziarParametrosEquipo($Codigo, $parametros);
+                    }elseif(empty($paramActuales)&&isset($parametros)){
+                        $regs = $parametrosControl->AgregarParametrosEquipo($Codigo, $parametros);
+                    }else{
+                        $regs=0;
+                    }
+                     echo json_encode(array('respuesta' => true, 'code' => $Codigo, 'params' => $regs)); 
                 } else {
                     echo json_encode(array('respuesta' => false, 'code' => '', 'params' => 0));
                 }
             }
-            break;
+        break;
+        case 'cargarProductosTipo':
+            $tiposControl = new TiposequiposCL();
+            $eject = $tiposControl->ConsultaEquiposTipo($tipo);
+
+            $modelosDetalles = Array();
+            if (!empty($eject)) {
+                echo json_encode($eject);
+            }else{
+                echo json_encode(array());
+            }
+        break; 
         default:
             echo json_encode(array("status" => false, "code" => "noAction"));
             break;

@@ -10,7 +10,7 @@
 namespace Application\Views;
 
 use Application\RenderPages;
-use Application\Controllers\EquipospatronesCL;
+use Application\Controllers\EquiposCL;
 /**
  * Description of Equipospage
  *
@@ -20,35 +20,21 @@ class EquiposPatronesPage extends RenderPages{
     //put your code here
     
     public function getIndex() {
-        $equiposPatrones =new EquipospatronesCL();
+        $equiposPatrones =new EquiposCL();
         $data['listPatrones']=$equiposPatrones->ListadoPatrones();
         
         return $this->render('patrones/listado.twig',$data);
     }
-       
-    public function getForm($code = null) {
-        $marcasEquipos=new \Application\Controllers\MarcasCL();
-        $data['listaMarcas']=$marcasEquipos->ListaMarcas();
 
-        if ($code != null && $code > 0) {
-            $customController = new \Application\Controllers\EquipospatronesCL();
-            $info = $customController->ConsultaUnEquipo($code);
-            if(!empty($info)){
-                $data['patron'] = $info[0];
-            }
-        }
-        return $this->render('patrones/form.twig', $data);
-    }
-    
     public function getCalibracion($code) {
         if ($code != null && $code > 0) {
-            $customController = new \Application\Controllers\EquipospatronesCL();
-            $info = $customController->ConsultaUnEquipo($code);
-            if(!empty($info)){
-                $data['patron'] = $info[0];
-                
+            $customController = new EquiposCL();
+            $info = $customController->ConsultaDetallesEquipo($code);
+            if($info){
+                $data['patron'] = $info;
+
                 $calibraControl = new \Application\Controllers\CalibracionpatronesCL();
-                $data['listCalibracion'] = $calibraControl->ConsultaCalibracionesPatron($info[0]->codigo);
+                $data['listCalibracion'] = $calibraControl->ConsultaCalibracionesPatron($info->codigo);
       
                 $data['mensaje'] = 'no data';
                 $pageRender= $this->render('patrones/calibracion.twig', $data);
@@ -67,10 +53,10 @@ class EquiposPatronesPage extends RenderPages{
     
     public function getParams($code) {
         if ($code != null && $code > 0) {
-            $customController = new \Application\Controllers\EquipospatronesCL();
-            $info = $customController->ConsultaUnEquipo($code);
-            if(!empty($info)){
-                $data['patron'] = $info[0];
+            $customController = new EquiposCL();
+            $info = $customController->ConsultaDetallesEquipo($code);
+            if($info){
+                $data['patron'] = $info;
                 
                 $paramControl = new \Application\Controllers\ParametrosCL();
                 $data['listParametros'] = $paramControl->ListaParametros();
@@ -82,9 +68,8 @@ class EquiposPatronesPage extends RenderPages{
                 $data['listPruebas'] = $pruebasControl->ListaTipos();
                 
                 $paramAsignadosControl = new \Application\Controllers\ParametrospatronesCL();
-                $data['listParametros'] = $paramAsignadosControl->ConsultaParametrosPatron($info[0]->codigo);
+                $data['parametrosAsign'] = $paramAsignadosControl->ConsultaParametrosPatron($info->codigo);
       
-                $data['mensaje'] = 'no data';
                 $pageRender= $this->render('patrones/params.twig', $data);
                 
             }else{

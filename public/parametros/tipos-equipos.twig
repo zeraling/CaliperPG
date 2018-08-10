@@ -23,7 +23,7 @@
                 </div>
                 <!-- /.info-box -->
             </div>
-            <div class="col-xs-12 col-sm-8 widget-container-col">
+            <div class="col-xs-12 col-sm-9 widget-container-col">
                 <div class="widget-box widget-color-green2">
                     <div class="widget-header">
                         <h5 class="widget-title">EQUIPOS PARA CALIBRAR</h5>
@@ -41,14 +41,9 @@
                                             <li><a id="Actualizar"><i class="fa fa-edit"></i> Actualizar</a></li>  
                                         </ul>
                                     </div>
-                                    <div class="btn-group">
-                                        <button data-toggle="dropdown" class="btn btn-primary btn-sm dropdown-toggle" aria-expanded="false">
-                                            MAS + <span class="ace-icon fa fa-caret-down icon-on-right"></span>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-success">  
-                                            <li><a id="Parametros" ><i class="fa fa-database"></i> Parametros </a></li>
-                                            <li><a id="Unidades"><i class="fa fa-level-up"></i> Unidades </a></li>  
-                                        </ul>
+                                    <div class="btn-group mr10">
+                                        <button class="btn btn-primary btn-sm" id="Parametros" type="button"><i class="fa fa-database"></i> Params</button>  
+                                        <button class="btn btn-purple btn-sm" id="Unidades"  type="button"><i class="fa fa-level-up"></i> Unidades</button>  
                                     </div>
                                 </div>
                                 <div class="pull-right">
@@ -62,7 +57,8 @@
                                     <thead>
                                         <tr>
                                             <th>Codigo</th>
-                                            <th>Nombre</th>
+                                            <th>Tipo</th>
+                                            <th>Categoria</th>
                                             <th>Parametros</th>
                                         </tr>
                                     </thead> 
@@ -72,6 +68,7 @@
                                                 <tr>
                                                     <td><span data="{{tipos.id}}">{{tipos.id}}</span></td>
                                                     <td>{{tipos.nombre}}</td>
+                                                    <td>{{tipos.categoria}}</td>
                                                     <td>{{tipos.cantidad}}</td>
                                                 </tr>
                                             {%endfor%}
@@ -93,5 +90,5 @@
     <script type="text/javascript" src="{{'template/jquery/jquery.dataTables.min.js'|baseUrl}}"></script>
     <script type="text/javascript" src="{{'template/jquery/jquery.dataTables.bootstrap.min.js'|baseUrl}}"></script>
     <!-- Custom -->
-    <script type="text/javascript" src="{{'application/scripts/parametros/equipos.js'|baseUrl}}"></script>
+    <script type="text/javascript" src="{{'application/scripts/parametros/tipos-equipos.js'|baseUrl}}"></script>
 {% endblock %}

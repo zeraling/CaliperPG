@@ -21,19 +21,18 @@ class ParametrosPage extends RenderPages {
     //put your code here
     public function getIndex() {
         $tiposContrl = new \Application\Controllers\TiposequiposCL();
-        $data['listTipos'] = $tiposContrl->ListaTiposEquipos();
-
-        return $this->render('parametros/equipos.twig', $data);
+        $data['listTipos'] = $tiposContrl->ListaGeneral();
+        return $this->render('parametros/tipos-equipos.twig', $data);
     }
 
-    public function getLista() {
+    public function getAdminParam() {
         $parametrosContrl = new \Application\Controllers\ParametrosCL();
         $data['listParametros'] = $parametrosContrl->ListaParametros();
 
-        return $this->render('parametros/lista.twig', $data);
+        return $this->render('parametros/admin-param.twig', $data);
     }
 
-    public function getAdmin($code = null) {
+    public function getAdminTipos($code = null) {
         if ($code != null && $code > 0) {
             $tiposControl = new \Application\Controllers\TiposequiposCL();
             $tipoEq = $tiposControl->ConsultaUnTipo($code);
@@ -41,12 +40,13 @@ class ParametrosPage extends RenderPages {
 
             $paramControl = new \Application\Controllers\ParametrosequiposCL();
             $data['listParametros'] = $paramControl->ConsultaParametrosEquipos($code);
-            
+                     
         } else {
             $parametrosContrl = new \Application\Controllers\ParametrosCL();
             $data['listParametros'] = $parametrosContrl->ListaParametros();
         }
-        return $this->render('parametros/admin.twig', $data);
+        $data['categorias'] = ['equipo'=>'Equipo Medico','patron'=>'Equipo Patron'];
+        return $this->render('parametros/admin-tipos.twig', $data);
     }
 
     public function getUnidades() {

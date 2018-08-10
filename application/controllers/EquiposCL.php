@@ -42,9 +42,9 @@ class EquiposCL extends CustomFunctions {
         }
     }
 
-    public function VerificarUnEquipo(\Application\Data\EquiposVO $param) {
+    public function VerificarUnEquipo($serie) {
         try {
-            $accion = $this->serviceData->EquipoEspecifico($param);
+            $accion = $this->serviceData->EquipoEspecifico($serie);
             return $accion;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();
@@ -60,9 +60,36 @@ class EquiposCL extends CustomFunctions {
         }
     }
 
-    public function ConsultaUnEquipo($producto) {
+    public function ConsultaUnEquipo($producto,$patron = false) {
         try {
-            $equipo1 = $this->serviceData->UnEquipo($producto);
+            $equipo1 = $this->serviceData->UnEquipo($producto,$patron);
+            return $equipo1;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
+    public function ConsultaDetallesEquipo($producto) {
+        try {
+            $equipo1 = $this->serviceData->DetallesEquipo($producto);
+            return $equipo1;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
+    public function ConsultaInfoEquipo($producto) {
+        try {
+            $equipo1 = $this->serviceData->Info($producto);
+            return $equipo1;
+        } catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+    }
+    
+    public function ListadoPatrones() {
+        try {
+            $equipo1 = $this->serviceData->Patrones();
             return $equipo1;
         } catch (Exception $exc) {
             echo $exc->getTraceAsString();

@@ -19,11 +19,8 @@
                             <div class="widget-main">
                                 <div class="form-horizontal">
                                     <div class="form-group">
-                                        <div class="col-sm-4 control-label">
-                                            <span class="label label-primary">Detalles:</span>
-                                        </div>
-                                        <div class="col-xs-5">
-                                            <div class="well">{{patron.nombre}}</div>
+                                        <div class="col-sm-10 col-sm-offset-1">
+                                            <div class="well">{{patron.descripcion}}</div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -148,15 +145,15 @@
                                     </tr>    
                                 </thead>
                                 <tbody>
-                                    {%if listParametros%}
-                                        {%for lista in listParametros %}
+                                    {%if parametrosAsign %}
+                                        {%for asign in parametrosAsign %}
                                             <tr>
-                                                <td>{{lista.parametro}}</td>
-                                                <td>{{lista.unidad}}</td> 
-                                                <td>{{lista.resolucion}}</td>
-                                                <td>{{lista.incertidumbre}}</td>    
-                                                <td>{{lista.valor_tolerancia}} {{lista.unidad_tolerancia}}</td>
-                                                <td><button type="button" class="btn btn-minier btn-danger btnDeleteParam" data="{{lista.id}}"><i class="fa fa-minus"></i></button></td>
+                                                <td>{{asign.parametro}}</td>
+                                                <td>{{asign.unidad}}</td> 
+                                                <td>{{asign.resolucion}}</td>
+                                                <td>{{asign.incertidumbre}}</td>    
+                                                <td>{{asign.valor_tolerancia}} {{asign.unidad_tolerancia}}</td>
+                                                <td><button type="button" class="btn btn-minier btn-danger btnDeleteParam" data="{{asign.id}}"><i class="fa fa-minus"></i></button></td>
                                             </tr>  
                                         {%endfor%}
                                     {%endif%}
